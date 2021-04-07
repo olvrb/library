@@ -20,6 +20,14 @@ public class Employee extends User {
     public Employee() {
     }
 
+    public Set<User> getSupervisees() {
+        return supervisees;
+    }
+
+    public User getSupervisor() {
+        return supervisor;
+    }
+
     @Override
     public int getMaxRent() {
         return 7;

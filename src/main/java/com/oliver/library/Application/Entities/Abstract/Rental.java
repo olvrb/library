@@ -29,6 +29,7 @@ public class Rental implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+
     public Rental(RentalObject rentalObject, User user) {
         this.rentalObject = rentalObject;
         this.user = user;
@@ -41,5 +42,25 @@ public class Rental implements Serializable {
 
     public boolean returned() {
         return this.returned;
+    }
+
+    public RentalKey getId() {
+        return id;
+    }
+
+    public boolean isReturned() {
+        return returned;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public RentalObject getRentalObject() {
+        return rentalObject;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

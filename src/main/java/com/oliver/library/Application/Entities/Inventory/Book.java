@@ -9,6 +9,22 @@ public class Book extends RentalObject {
     private Year publicationYear;
     private String ISBN;
 
+    public Year getPublicationYear() {
+        return publicationYear;
+    }
+
+    public String getISBN() {
+        return ISBN;
+    }
+
+    public boolean isReference() {
+        return reference;
+    }
+
+    public boolean isCourseLiterature() {
+        return courseLiterature;
+    }
+
     public Book(String title, String genre, String physicalLocation, String description, Year publicationYear, String ISBN, boolean reference, boolean courseLiterature) {
         super(title, genre, physicalLocation, description);
         this.publicationYear = publicationYear;
@@ -18,7 +34,7 @@ public class Book extends RentalObject {
     }
 
     public Book() {
-        
+
     }
 
     @Override

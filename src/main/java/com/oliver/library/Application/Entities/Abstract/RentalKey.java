@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 @Embeddable
 public class RentalKey implements Serializable {
+    @SuppressWarnings("JpaDataSourceORMInspection")
     @Column(name = "user_id")
     private String userId;
 
@@ -14,6 +15,7 @@ public class RentalKey implements Serializable {
         this.rentalObjectId = rentalObjectId;
     }
 
+    @SuppressWarnings("JpaDataSourceORMInspection")
     @Column(name = "rental_object_id")
     private String rentalObjectId;
 

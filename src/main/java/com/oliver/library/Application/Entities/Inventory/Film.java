@@ -16,4 +16,12 @@ public class Film extends RentalObject {
     public int getRentalPeriod() {
         return 7;
     }
+
+    public String getAgeLimit() {
+        return ageLimit;
+    }
+
+    public String getProductionCountry() {
+        return productionCountry;
+    }
 }

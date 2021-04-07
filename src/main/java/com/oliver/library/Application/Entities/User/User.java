@@ -5,6 +5,7 @@ import com.oliver.library.Application.Entities.BaseEntity;
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.Entities.Abstract.Rental;
 import com.sun.istack.NotNull;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -43,7 +44,7 @@ public abstract class User extends BaseEntity {
     }
 
     public User() {
-        
+
     }
 
 
@@ -91,8 +92,8 @@ public abstract class User extends BaseEntity {
         this.password = hashPassword(password);
     }
 
-    // TODO: Implement
     private String hashPassword(String pw) {
-        return pw;
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(pw);
     }
 }
