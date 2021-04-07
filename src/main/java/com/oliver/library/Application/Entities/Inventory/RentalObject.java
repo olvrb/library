@@ -20,6 +20,7 @@ public abstract class RentalObject extends BaseEntity {
 
     private String genre;
     private String physicalLocation;
+    private String description;
 
     @ManyToMany
     @JoinTable(name = "rental_object_collaborators", joinColumns = @JoinColumn(name = "rental_object_id"), inverseJoinColumns = @JoinColumn(name = "collaborators_id"))
