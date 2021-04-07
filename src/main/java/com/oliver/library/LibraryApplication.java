@@ -1,19 +1,7 @@
 package com.oliver.library;
 
-import ch.qos.logback.classic.BasicConfigurator;
-import com.oliver.library.Application.Entities.User.Employee;
-import com.oliver.library.Application.Entities.User.Researcher;
-import com.oliver.library.Application.Entities.User.Student;
-import com.oliver.library.Application.Entities.User.User;
-import com.oliver.library.Application.Repositories.UserRepository;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-
-import java.util.Optional;
-import java.util.Set;
 
 
 @SpringBootApplication
@@ -23,21 +11,26 @@ public class LibraryApplication {
         SpringApplication.run(LibraryApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner demo(UserRepository repository) {
+    /*@Bean
+    public CommandLineRunner demo(UserRepository userRepository, RentalObjectRepository rentalObjectRepository, RentalRepository rentalRepository) {
         return (args) -> {
             // save a few customers
             try {
-                repository.save(new Student("jack"));
+                Book b1 = new Book("book1", "horror", "1b", "scary book", Year.of(2019), "12093124", false, false);
+                User u1 = new Student("jack", "0204150072", "test");
+                Rental r1 = new Rental(b1, u1);
 
-                Set<User> jack = repository.findByName("jack");
+                rentalObjectRepository.save(b1);
+                userRepository.save(u1);
+                rentalRepository.save(r1);
+
+                Set<User> jack = userRepository.findByName("jack");
                 System.out.println(jack.size());
 
             } catch (Exception e) {
                 System.out.println(e);
             }
         };
-    }
-
+    }*/
 
 }

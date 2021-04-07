@@ -13,4 +13,12 @@ public class Collaborator extends BaseEntity {
 
     @ManyToMany(mappedBy = "collaborators")
     private Set<RentalObject> rentalObjects;
+
+    public Collaborator(String name) {
+        this.name = name;
+    }
+
+    public Collaborator() {
+        
+    }
 }

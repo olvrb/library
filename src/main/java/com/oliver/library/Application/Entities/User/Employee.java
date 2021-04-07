@@ -7,14 +7,18 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Employee extends User {
-    public Employee() {
-    }
-
     @OneToMany
     private Set<User> supervisees = new HashSet<>();
 
     @ManyToOne
     private User supervisor;
+
+    public Employee(String name, String ssn, String password) {
+        super(name, ssn, password);
+    }
+
+    public Employee() {
+    }
 
     @Override
     public int getMaxRent() {

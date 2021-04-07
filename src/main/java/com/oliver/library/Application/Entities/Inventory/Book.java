@@ -6,9 +6,20 @@ import java.time.Year;
 
 @Entity
 public class Book extends RentalObject {
-    private String title;
     private Year publicationYear;
     private String ISBN;
+
+    public Book(String title, String genre, String physicalLocation, String description, Year publicationYear, String ISBN, boolean reference, boolean courseLiterature) {
+        super(title, genre, physicalLocation, description);
+        this.publicationYear = publicationYear;
+        this.ISBN = ISBN;
+        this.reference = reference;
+        this.courseLiterature = courseLiterature;
+    }
+
+    public Book() {
+        
+    }
 
     @Override
     public int getRentalPeriod() {

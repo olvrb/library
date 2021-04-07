@@ -15,8 +15,20 @@ public abstract class RentalObject extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private Set<Rental> rentals = new HashSet<>();
 
+    public RentalObject() {
+
+    }
+
     public abstract int getRentalPeriod();
 
+    private String title;
+
+    public RentalObject(String title, String genre, String physicalLocation, String description) {
+        this.title = title;
+        this.genre = genre;
+        this.physicalLocation = physicalLocation;
+        this.description = description;
+    }
 
     private String genre;
     private String physicalLocation;

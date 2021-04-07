@@ -4,6 +4,7 @@ package com.oliver.library.Application.Entities.User;
 import com.oliver.library.Application.Entities.BaseEntity;
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.Entities.Abstract.Rental;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -22,20 +23,27 @@ import java.util.stream.Collectors;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class User extends BaseEntity {
-    public User(String name) {
-        this.name = name;
-    }
-
+    @NotNull
     private String name;
+
+    @NotNull
     private String ssn;
+
+    @NotNull
     private String password;
 
     @OneToMany(mappedBy = "rentalObject")
     private Set<Rental> rentals = new HashSet<>();
 
 
-    public User() {
+    public User(String name, String ssn, String password) {
+        this.name = name;
+        this.ssn = ssn;
+        this.password = password;
+    }
 
+    public User() {
+        
     }
 
 
