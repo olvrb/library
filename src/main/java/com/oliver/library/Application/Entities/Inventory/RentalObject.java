@@ -15,7 +15,8 @@ public abstract class RentalObject extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private Set<Rental> rentals = new HashSet<>();
 
-    protected int rentalPeriod;
+    public abstract int getRentalPeriod();
+
 
     private String genre;
     private String physicalLocation;
@@ -26,6 +27,6 @@ public abstract class RentalObject extends BaseEntity {
 
 
     public boolean canBeRented() {
-        return this.rentalPeriod > 0;
+        return this.getRentalPeriod() > 0;
     }
 }

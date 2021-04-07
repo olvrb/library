@@ -8,12 +8,16 @@ import com.oliver.library.Application.Entities.Abstract.Rental;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 // Student has max 5 books
 // Researcher has max 10 books
 // Employee has max 7 books
 // GeneralUser has max 3 books
+
+// For efficiency and simplicity, all children are stored in a single table.
+
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -37,8 +41,15 @@ public abstract class User extends BaseEntity {
 
     public abstract int getMaxRent();
 
+    // Get all rentals
     public Set<Rental> getRentals() {
         return this.rentals;
+    }
+
+    public Set<Rental> getCurrentRentals() {
+        return this.rentals.stream()
+                           .filter(x -> !x.returned())
+                           .collect(Collectors.toSet());
     }
 
     public boolean canRent(RentalObject object) {
@@ -55,10 +66,9 @@ public abstract class User extends BaseEntity {
         return name;
     }
 
-    private int currentlyRented() {
-        return this.rentals.stream()
-                           .filter(x -> !x.returned())
-                           .toArray().length;
+    public int currentlyRented() {
+        return this.getCurrentRentals()
+                   .size();
     }
 
     public String getSsn() {

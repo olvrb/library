@@ -4,7 +4,9 @@ import javax.persistence.Entity;
 
 @Entity
 public class Journal extends RentalObject {
-    public Journal() {
-        this.rentalPeriod = 0;
+
+    @Override
+    public int getRentalPeriod() {
+        return 0;
     }
 }

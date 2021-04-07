@@ -8,11 +8,12 @@ import java.util.Set;
 
 @Entity
 public class Film extends RentalObject {
-    public Film() {
-        this.rentalPeriod = 7;
-    }
 
     private String ageLimit;
     private String productionCountry;
-    
+
+    @Override
+    public int getRentalPeriod() {
+        return 7;
+    }
 }
