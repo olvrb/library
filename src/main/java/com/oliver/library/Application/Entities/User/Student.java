@@ -7,8 +7,13 @@ public class Student extends User {
     public Student(String name) {
         super(name);
     }
+
     public Student() {
         super();
-        this.maxRent = 10;
+    }
+
+    @Override
+    public int getMaxRent() {
+        return 5;
     }
 }

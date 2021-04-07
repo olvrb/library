@@ -2,9 +2,13 @@ package com.oliver.library.Application.Entities.Inventory;
 
 
 import javax.persistence.Entity;
+import java.time.Year;
 
 @Entity
 public class Book extends RentalObject {
+    private String title;
+    private Year publicationYear;
+    private String ISBN;
     private boolean reference;
     private boolean courseLiterature;
 
