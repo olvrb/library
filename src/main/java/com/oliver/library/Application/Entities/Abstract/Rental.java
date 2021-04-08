@@ -11,20 +11,19 @@ import java.util.Date;
 
 @Entity
 public class Rental implements Serializable {
+    private final boolean returned = false;
+
+    private final Date startDate = new Date();
+
     @EmbeddedId
     private RentalKey id;
 
-
-    private final boolean returned = false;
-    private final Date startDate = new Date();
-
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("rentalObjectId")
     @JoinColumn(name = "rental_object_id")
     private RentalObject rentalObject;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;

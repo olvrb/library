@@ -12,15 +12,24 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class RentalObject extends BaseEntity {
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Rental> rentals = new HashSet<>();
+
+    private String title;
+
+    private String genre;
+
+    private String physicalLocation;
+
+    private String description;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "rental_object_collaborators", joinColumns = @JoinColumn(name = "rental_object_id"), inverseJoinColumns = @JoinColumn(name = "collaborators_id"))
+    private Set<Collaborator> collaborators;
 
     public RentalObject() {
 
     }
-
-    public abstract int getRentalPeriod();
-
 
     public RentalObject(String title, String genre, String physicalLocation, String description) {
         this.title = title;
@@ -29,16 +38,7 @@ public abstract class RentalObject extends BaseEntity {
         this.description = description;
     }
 
-    private String title;
-    private String genre;
-    private String physicalLocation;
-    private String description;
-
-
-    @ManyToMany
-    @JoinTable(name = "rental_object_collaborators", joinColumns = @JoinColumn(name = "rental_object_id"), inverseJoinColumns = @JoinColumn(name = "collaborators_id"))
-    private Set<Collaborator> collaborators;
-
+    public abstract int getRentalPeriod();
 
     public boolean canBeRented() {
         return this.getRentalPeriod() > 0;

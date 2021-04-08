@@ -4,6 +4,7 @@ import com.oliver.library.Application.Entities.BaseEntity;
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import java.util.Set;
 
@@ -11,16 +12,8 @@ import java.util.Set;
 public class Collaborator extends BaseEntity {
     private String name;
 
-    @ManyToMany(mappedBy = "collaborators")
+    @ManyToMany(mappedBy = "collaborators", fetch = FetchType.EAGER)
     private Set<RentalObject> rentalObjects;
-
-    public String getName() {
-        return name;
-    }
-
-    public Set<RentalObject> getRentalObjects() {
-        return rentalObjects;
-    }
 
     public Collaborator(String name) {
         this.name = name;
@@ -28,5 +21,13 @@ public class Collaborator extends BaseEntity {
 
     public Collaborator() {
 
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Set<RentalObject> getRentalObjects() {
+        return rentalObjects;
     }
 }

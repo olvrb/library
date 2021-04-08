@@ -10,14 +10,14 @@ public class RentalKey implements Serializable {
     @Column(name = "user_id")
     private String userId;
 
+    @SuppressWarnings("JpaDataSourceORMInspection")
+    @Column(name = "rental_object_id")
+    private String rentalObjectId;
+
     public RentalKey(String rentalObjectId, String userId) {
         this.userId = userId;
         this.rentalObjectId = rentalObjectId;
     }
-
-    @SuppressWarnings("JpaDataSourceORMInspection")
-    @Column(name = "rental_object_id")
-    private String rentalObjectId;
 
     public RentalKey() {
     }

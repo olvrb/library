@@ -7,10 +7,10 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Employee extends User {
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<User> supervisees = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User supervisor;
 
     public Employee(String name, String ssn, String password) {
