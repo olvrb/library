@@ -1,16 +1,22 @@
 package com.oliver.library.Application.GUIViews.Authentication;
 
+import com.oliver.library.LibraryApplicationGUI;
+
 import javax.swing.*;
 import java.awt.event.*;
 
-public class SignUpView extends JDialog {
+public class SignUpDialog extends JDialog {
     private JPanel contentPane;
 
     private JButton buttonOK;
 
     private JButton buttonCancel;
 
-    public SignUpView() {
+    private LibraryApplicationGUI gui;
+
+
+    public SignUpDialog(LibraryApplicationGUI gui) {
+        this.gui = gui;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -33,12 +39,6 @@ public class SignUpView extends JDialog {
                                            JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    public static void main(String[] args) {
-        SignUpView dialog = new SignUpView();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
 
     private void onOK() {
         // add your code here

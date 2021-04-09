@@ -2,12 +2,15 @@ package com.oliver.library;
 
 import com.oliver.library.Application.Entities.User.User;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootApplication
+@ComponentScan("com.oliver.library")
 public class LibraryApplication {
 
     private User currentUser;
@@ -26,6 +29,14 @@ public class LibraryApplication {
 
         ConfigurableApplicationContext context = builder.run(args);
 
-        SpringApplication.run(LibraryApplication.class, args);
+        // SpringApplication.run(LibraryApplication.class, args);
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
     }
 }

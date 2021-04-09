@@ -10,6 +10,7 @@ import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.naming.AuthenticationException;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Optional;
@@ -36,6 +37,7 @@ public abstract class User extends BaseEntity {
     private String name;
 
     @NotNull
+    @Column(unique = true)
     private String ssn;
 
     @NotNull
@@ -55,18 +57,6 @@ public abstract class User extends BaseEntity {
 
     }
 
-    public static User Authenticate(String ssn, String pw) {
-        Optional<User> user = userRepository.findBySsn(ssn);
-
-        // If user is not found, return null.
-        // If user is found and password matches, return user.
-        // Else return null.
-        if (user.isEmpty()) {
-            return null;
-        } else if (user.isPresent() && new BCryptPasswordEncoder().matches(pw, user.get().password)) {
-            return user.get();
-        } else return null;
-    }
 
     public abstract int getMaxRent();
 

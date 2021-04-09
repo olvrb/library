@@ -1,5 +1,7 @@
 package com.oliver.library.Application.GUIViews;
 
+import com.oliver.library.LibraryApplicationGUI;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,14 +19,21 @@ public class MainView {
 
     private JLabel titleLabel;
 
-    public MainView() {
-        signUpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("clicked");
-            }
+    private LibraryApplicationGUI gui;
+
+    public MainView(LibraryApplicationGUI gui) {
+        this.gui = gui;
+        signUpButton.addActionListener(e -> {
+            this.gui.showSignUpDialog();
         });
 
+        signInButton.addActionListener(e -> {
+            this.gui.showSignInDialog();
+        });
+    }
+
+    public LibraryApplicationGUI getGui() {
+        return gui;
     }
 
     public JPanel getMainView() {

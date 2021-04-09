@@ -13,6 +13,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.Year;
+import java.util.Random;
 import java.util.Set;
 
 @Component
@@ -32,7 +33,7 @@ public class DataLoaderComponent implements ApplicationRunner {
 
     public void run(ApplicationArguments args) {
         Book b1 = new Book("book1", "horror", "1b", "scary book", Year.of(2019), "12093124", false, false);
-        User u1 = new Student("jack", "0204150072", "test");
+        User u1 = new Student("jack", String.valueOf(new Random().nextDouble()), "test");
         Rental r1 = new Rental(b1, u1);
 
         rentalObjectRepository.save(b1);

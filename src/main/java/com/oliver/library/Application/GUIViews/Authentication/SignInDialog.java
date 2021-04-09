@@ -1,16 +1,26 @@
 package com.oliver.library.Application.GUIViews.Authentication;
 
+import com.oliver.library.Application.GUIViews.MainView;
+import com.oliver.library.LibraryApplicationGUI;
+
 import javax.swing.*;
 import java.awt.event.*;
 
-public class SignInView extends JDialog {
+public class SignInDialog extends JDialog {
     private JPanel contentPane;
 
     private JButton buttonOK;
 
     private JButton buttonCancel;
 
-    public SignInView() {
+    private JTextField ssnField;
+
+    private JPasswordField passwordField;
+
+    private LibraryApplicationGUI gui;
+
+    public SignInDialog(LibraryApplicationGUI gui) {
+        this.gui = gui;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -43,14 +53,8 @@ public class SignInView extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    public static void main(String[] args) {
-        SignInView dialog = new SignInView();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
-
     private void onOK() {
+        this.gui.authenticateUser(this.ssnField.getText(), new String(this.passwordField.getPassword()));
         // add your code here
         dispose();
     }
