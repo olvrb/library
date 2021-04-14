@@ -28,8 +28,6 @@ public class LibraryApplication {
         builder.headless(false);
 
         ConfigurableApplicationContext context = builder.run(args);
-
-        // SpringApplication.run(LibraryApplication.class, args);
     }
 
     public User getCurrentUser() {

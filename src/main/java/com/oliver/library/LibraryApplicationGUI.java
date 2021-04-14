@@ -1,18 +1,22 @@
 package com.oliver.library;
 
+import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.Entities.User.User;
 import com.oliver.library.Application.GUIViews.Authentication.SignInDialog;
 import com.oliver.library.Application.GUIViews.Authentication.SignUpDialog;
 import com.oliver.library.Application.GUIViews.MainView;
+import com.oliver.library.Application.Services.LibraryService;
 import com.oliver.library.Application.Services.UserAuthenticationService;
 import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import javax.naming.AuthenticationException;
 import javax.swing.*;
 import java.awt.*;
+import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class LibraryApplicationGUI {
@@ -26,6 +30,9 @@ public class LibraryApplicationGUI {
     @Autowired
     private UserAuthenticationService userService;
 
+    @Autowired
+    private LibraryService libraryService;
+
     public LibraryApplicationGUI(LibraryApplication control) {
         this.control = control;
         initializeUI();
@@ -35,9 +42,6 @@ public class LibraryApplicationGUI {
         JOptionPane.showMessageDialog(this.mainFrame, error.getMessage());
     }
 
-    public void setUserInfo(User user) throws ExecutionControl.NotImplementedException {
-        throw new ExecutionControl.NotImplementedException("Not implemented");
-    }
 
     private void initializeUI() {
         this.mainView = new MainView(this);
@@ -57,19 +61,24 @@ public class LibraryApplicationGUI {
                               dim.height / 2 - mainFrame.getSize().height / 2);
     }
 
-    public void showSignInDialog() {
-        this.showDialog(new SignInDialog(this));
+    public JDialog showSignInDialog() {
+        return this.showDialog(new SignInDialog(this));
+    }
+
+    public User getCurrentUser() {
+        return control.getCurrentUser();
     }
 
     public void showSignUpDialog() {
         this.showDialog(new SignUpDialog(this));
     }
 
-    private void showDialog(JDialog dialog) {
+    private JDialog showDialog(JDialog dialog) {
         dialog.pack();
         dialog.setLocationByPlatform(true);
         dialog.setLocationRelativeTo(this.mainFrame);
         dialog.setVisible(true);
+        return dialog;
     }
 
     private Dimension getCenter() {
@@ -79,11 +88,17 @@ public class LibraryApplicationGUI {
 
     public boolean authenticateUser(String ssn, String pw) {
         try {
-            this.control.setCurrentUser(userService.getAuthenticatedUser(ssn, pw));
+            User user = userService.getAuthenticatedUser(ssn, pw);
+            this.control.setCurrentUser(user);
+            mainView.updateUserInfo(user);
+            return true;
         } catch (AuthenticationException e) {
             this.showError(e);
+            return false;
         }
+    }
 
-        return false;
+    public List<RentalObject> search(String searchString) {
+        return libraryService.getRentalObjects(searchString);
     }
 }

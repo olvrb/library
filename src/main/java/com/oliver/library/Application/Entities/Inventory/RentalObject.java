@@ -67,4 +67,9 @@ public abstract class RentalObject extends BaseEntity {
     public Set<Collaborator> getCollaborators() {
         return collaborators;
     }
+
+    @Override
+    public String toString() {
+        return this.getTitle();
+    }
 }

@@ -54,9 +54,12 @@ public class SignInDialog extends JDialog {
     }
 
     private void onOK() {
-        this.gui.authenticateUser(this.ssnField.getText(), new String(this.passwordField.getPassword()));
+        if (this.gui.authenticateUser(this.ssnField.getText(), new String(this.passwordField.getPassword()))) {
+            dispose();
+        } else {
+            this.passwordField.setText("");
+        }
         // add your code here
-        dispose();
     }
 
     private void onCancel() {
