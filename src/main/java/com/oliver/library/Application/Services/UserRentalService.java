@@ -13,10 +13,11 @@ public class UserRentalService {
     @Autowired
     private RentalRepository rentalRepository;
 
-    public void loan(User user, RentalObject object) throws InvalidLoanException {
+    public Rental loan(User user, RentalObject object) throws InvalidLoanException {
         if (user.canRent(object)) {
             Rental newRental = new Rental(object, user);
             rentalRepository.save(newRental);
+            return newRental;
         } else throw new InvalidLoanException("Can not loan this object.");
     }
 }

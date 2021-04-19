@@ -1,5 +1,6 @@
 package com.oliver.library;
 
+import com.oliver.library.Application.Entities.Abstract.Rental;
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.Entities.User.User;
 import com.oliver.library.Application.Exceptions.InvalidLoanException;
@@ -122,8 +123,11 @@ public class LibraryApplicationGUI {
 
     public void loan(RentalObject object) {
         try {
-            this.userRentalService.loan(this.getCurrentUser(), object);
-            this.quickMessageDialog(String.format("%s rented until %s.", object.getTitle(), object));
+            Rental r = this.userRentalService.loan(this.getCurrentUser(), object);
+            this.quickMessageDialog(String.format("%s rented until %s.",
+                                                  object.getTitle(),
+                                                  r.getReturnDate()
+                                                   .toString()));
         } catch (InvalidLoanException e) {
             this.showError(e);
         }

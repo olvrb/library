@@ -7,6 +7,8 @@ import com.oliver.library.Application.Entities.User.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -64,9 +66,13 @@ public class Rental implements Serializable {
         return user;
     }
 
-    public DateTime getReturnDate() {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, this.startDate.getDay());
+    public Date getReturnDate() {
+        LocalDateTime date = this.startDate.toInstant()
+                                           .atZone(ZoneId.systemDefault())
+                                           .toLocalDateTime();
+        date.plusDays(this.rentalObject.getRentalPeriod());
+        return Date.from(date.atZone(ZoneId.systemDefault())
+                             .toInstant());
 
     }
 }
