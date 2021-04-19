@@ -37,4 +37,8 @@ public class LibraryApplication {
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
+
+    public boolean signedIn() {
+        return this.currentUser != null;
+    }
 }

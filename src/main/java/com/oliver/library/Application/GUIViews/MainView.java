@@ -29,6 +29,10 @@ public class MainView {
 
     private JTextArea currentUserInfo;
 
+    private JButton signOutButton;
+
+    private JButton loanButton;
+
     private LibraryApplicationGUI gui;
 
     private List<RentalObject> currentResults;
@@ -38,6 +42,9 @@ public class MainView {
         this.resultsListModel = new DefaultListModel<>();
         this.setSearchResultsToModel();
 
+        this.signOutButton.setVisible(false);
+        this.loanButton.setVisible(false);
+
         signUpButton.addActionListener(e -> {
             this.gui.showSignUpDialog();
         });
@@ -45,8 +52,15 @@ public class MainView {
         signInButton.addActionListener(e -> {
             this.gui.showSignInDialog();
         });
+        signOutButton.addActionListener(e -> {
+            this.gui.signOut();
+        });
 
         ListenerServices.addChangeListener(searchField, e -> updateSearchResults(searchField.getText()));
+
+        loanButton.addActionListener(e -> {
+            this.loan();
+        });
     }
 
     private void updateSearchResults(String searchString) {
@@ -57,6 +71,10 @@ public class MainView {
         this.currentResults = gui.search(searchString);
 
         this.resultsListModel.addAll(currentResults);
+    }
+
+    private void loan() {
+        this.gui.loan(this.resultsList.getSelectedValue());
     }
 
     private void setSearchResultsToModel() {
@@ -72,6 +90,16 @@ public class MainView {
     }
 
     public void updateUserInfo(User user) {
-        this.currentUserInfo.setText(String.format("Logged in as:\nName: %s\nSSN: %s", user.getName(), user.getSsn()));
+        if (user == null) this.currentUserInfo.setText("");
+        else this.currentUserInfo.setText(String.format("Logged in as:\nName: %s\nSSN: %s",
+                                                        user.getName(),
+                                                        user.getSsn()));
+    }
+
+    public void setSignedInState(boolean signedIn) {
+        this.signUpButton.setVisible(!signedIn);
+        this.signInButton.setVisible(!signedIn);
+        this.signOutButton.setVisible(signedIn);
+        this.loanButton.setVisible(signedIn);
     }
 }

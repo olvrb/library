@@ -5,8 +5,11 @@ import ch.qos.logback.classic.util.ContextSelectorStaticBinder;
 import com.oliver.library.Application.Entities.BaseEntity;
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.Entities.Abstract.Rental;
+import com.oliver.library.Application.Exceptions.InvalidLoanException;
+import com.oliver.library.Application.Repositories.RentalRepository;
 import com.oliver.library.Application.Repositories.UserRepository;
 import com.sun.istack.NotNull;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -33,6 +36,10 @@ public abstract class User extends BaseEntity {
     @Transient
     private static UserRepository userRepository;
 
+    @Autowired
+    @Transient
+    private static RentalRepository rentalRepository;
+
     @NotNull
     private String name;
 
@@ -43,7 +50,7 @@ public abstract class User extends BaseEntity {
     @NotNull
     private String password;
 
-    @OneToMany(mappedBy = "rentalObject", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "rentalObject", fetch = FetchType.EAGER)
     private Set<Rental> rentals = new HashSet<>();
 
 
@@ -66,9 +73,10 @@ public abstract class User extends BaseEntity {
     }
 
     public Set<Rental> getCurrentRentals() {
-        return this.rentals.stream()
-                           .filter(x -> !x.returned())
-                           .collect(Collectors.toSet());
+        return this.getRentals()
+                   .stream()
+                   .filter(x -> !x.returned())
+                   .collect(Collectors.toSet());
     }
 
     public boolean canRent(RentalObject object) {
@@ -78,7 +86,7 @@ public abstract class User extends BaseEntity {
 
     public boolean allowedToRent() {
         // Check if user has reached max quota
-        return this.getMaxRent() < this.currentlyRented();
+        return this.currentlyRented() <= this.getMaxRent();
     }
 
     public String getName() {

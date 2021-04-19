@@ -7,6 +7,7 @@ import com.oliver.library.Application.Entities.User.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -61,5 +62,11 @@ public class Rental implements Serializable {
 
     public User getUser() {
         return user;
+    }
+
+    public DateTime getReturnDate() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, this.startDate.getDay());
+
     }
 }

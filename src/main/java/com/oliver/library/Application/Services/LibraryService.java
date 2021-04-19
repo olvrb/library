@@ -14,7 +14,7 @@ public class LibraryService {
     @Autowired
     private RentalObjectRepository rentalObjectRepository;
 
-    public List<RentalObject> getRentalObjects(String searchString) {
-        return rentalObjectRepository.findByTitleContainingIgnoreCase(searchString);
+    public List<RentalObject> getAvailableRentalObjects(String searchString) {
+        return rentalObjectRepository.findByTitleContainingIgnoreCaseAndRentedFalse(searchString);
     }
 }

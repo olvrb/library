@@ -22,7 +22,7 @@ public class UserAuthenticationService {
 
     public User getAuthenticatedUser(String ssn, String pw) throws AuthenticationException {
         Optional<User> user = userRepository.findBySsn(ssn);
-        String error = "Invalid username or password";
+        String error = "Invalid username or password.";
 
         // If user is not found, return null.
         // If user is found and password matches, return user.

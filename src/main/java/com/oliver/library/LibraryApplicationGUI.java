@@ -2,21 +2,20 @@ package com.oliver.library;
 
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.Entities.User.User;
+import com.oliver.library.Application.Exceptions.InvalidLoanException;
 import com.oliver.library.Application.GUIViews.Authentication.SignInDialog;
 import com.oliver.library.Application.GUIViews.Authentication.SignUpDialog;
 import com.oliver.library.Application.GUIViews.MainView;
 import com.oliver.library.Application.Services.LibraryService;
 import com.oliver.library.Application.Services.UserAuthenticationService;
-import jdk.jshell.spi.ExecutionControl;
+import com.oliver.library.Application.Services.UserRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import javax.naming.AuthenticationException;
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class LibraryApplicationGUI {
@@ -33,13 +32,20 @@ public class LibraryApplicationGUI {
     @Autowired
     private LibraryService libraryService;
 
+    @Autowired
+    private UserRentalService userRentalService;
+
     public LibraryApplicationGUI(LibraryApplication control) {
         this.control = control;
         initializeUI();
     }
 
     public void showError(Exception error) {
-        JOptionPane.showMessageDialog(this.mainFrame, error.getMessage());
+        this.quickMessageDialog(error.getMessage());
+    }
+
+    public void quickMessageDialog(String s) {
+        JOptionPane.showMessageDialog(this.mainFrame, s);
     }
 
 
@@ -73,6 +79,12 @@ public class LibraryApplicationGUI {
         this.showDialog(new SignUpDialog(this));
     }
 
+    // Update gui to match signed in state.
+    public void signInOk() {
+        mainView.setSignedInState(true);
+    }
+
+
     private JDialog showDialog(JDialog dialog) {
         dialog.pack();
         dialog.setLocationByPlatform(true);
@@ -98,7 +110,22 @@ public class LibraryApplicationGUI {
         }
     }
 
+    public void signOut() {
+        this.control.setCurrentUser(null);
+        mainView.updateUserInfo(null);
+        this.mainView.setSignedInState(false);
+    }
+
     public List<RentalObject> search(String searchString) {
-        return libraryService.getRentalObjects(searchString);
+        return libraryService.getAvailableRentalObjects(searchString);
+    }
+
+    public void loan(RentalObject object) {
+        try {
+            this.userRentalService.loan(this.getCurrentUser(), object);
+            this.quickMessageDialog(String.format("%s rented until %s.", object.getTitle(), object));
+        } catch (InvalidLoanException e) {
+            this.showError(e);
+        }
     }
 }

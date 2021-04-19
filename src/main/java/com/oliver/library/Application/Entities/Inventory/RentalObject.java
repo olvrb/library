@@ -6,13 +6,14 @@ import com.oliver.library.Application.Entities.BaseEntity;
 import com.oliver.library.Application.Entities.Abstract.Rental;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class RentalObject extends BaseEntity {
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Rental> rentals = new HashSet<>();
 
     private String title;
@@ -22,6 +23,8 @@ public abstract class RentalObject extends BaseEntity {
     private String physicalLocation;
 
     private String description;
+
+    private boolean rented;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "rental_object_collaborators", joinColumns = @JoinColumn(name = "rental_object_id"), inverseJoinColumns = @JoinColumn(name = "collaborators_id"))
@@ -41,7 +44,7 @@ public abstract class RentalObject extends BaseEntity {
     public abstract int getRentalPeriod();
 
     public boolean canBeRented() {
-        return this.getRentalPeriod() > 0;
+        return this.getRentalPeriod() > 0 && !this.isRented();
     }
 
     public Set<Rental> getRentals() {
@@ -50,6 +53,10 @@ public abstract class RentalObject extends BaseEntity {
 
     public String getTitle() {
         return title;
+    }
+
+    public boolean isRented() {
+        return rented;
     }
 
     public String getGenre() {
