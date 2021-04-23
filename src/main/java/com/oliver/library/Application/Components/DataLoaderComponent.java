@@ -35,13 +35,13 @@ public class DataLoaderComponent implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         Book b1 = new Book("book1", "horror", "1b", "scary book", Year.of(2019), "12093124", false, false);
         User u1 = new Student("jack", String.valueOf(new Random().nextDouble()), "test");
-        Rental r1 = new Rental(b1, u1);
+        // Rental r1 = new Rental(b1, u1);
 
-        rentalObjectRepository.save(b1);
-        userRepository.save(u1);
-        rentalRepository.save(r1);
+        this.rentalObjectRepository.save(b1);
+        this.userRepository.save(u1);
+        // this.rentalRepository.save(r1);
 
-        Set<User> jack = userRepository.findByName("jack");
+        Set<User> jack = this.userRepository.findByName("jack");
         System.out.println(jack.size());
     }
 }

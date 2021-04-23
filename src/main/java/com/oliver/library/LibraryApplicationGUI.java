@@ -4,6 +4,7 @@ import com.oliver.library.Application.Entities.Abstract.Rental;
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.Entities.User.User;
 import com.oliver.library.Application.Exceptions.InvalidLoanException;
+import com.oliver.library.Application.Exceptions.RentalObjectRentedException;
 import com.oliver.library.Application.GUIViews.Authentication.SignInDialog;
 import com.oliver.library.Application.GUIViews.Authentication.SignUpDialog;
 import com.oliver.library.Application.GUIViews.MainView;
@@ -129,7 +130,11 @@ public class LibraryApplicationGUI {
     // Remove object if user is logged in and is admin.
     public void removeRentalObject(RentalObject object) {
         if (this.canEdit()) {
-            this.adminService.removeRentalObject(object);
+            try {
+                this.adminService.removeRentalObject(object);
+            } catch (RentalObjectRentedException e) {
+                this.showError(e);
+            }
         }
     }
 
