@@ -117,6 +117,10 @@ public class LibraryApplicationGUI {
         }
     }
 
+    public boolean saveObject(RentalObject obj) {
+        this.libraryService.save(obj);
+    }
+
     public void signOut() {
         this.control.setCurrentUser(null);
         this.mainView.updateUserInfo(null);

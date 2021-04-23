@@ -15,6 +15,10 @@ public class LibraryService {
     private RentalObjectRepository rentalObjectRepository;
 
     public List<RentalObject> getAvailableRentalObjects(String searchString) {
-        return rentalObjectRepository.findByTitleContainingIgnoreCaseAndRentedFalse(searchString);
+        return this.rentalObjectRepository.findByTitleContainingIgnoreCaseAndRentedFalse(searchString);
+    }
+
+    public void save(RentalObject obj) {
+        this.rentalObjectRepository.save(obj);
     }
 }

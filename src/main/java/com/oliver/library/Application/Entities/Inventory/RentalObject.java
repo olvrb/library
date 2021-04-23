@@ -6,7 +6,6 @@ import com.oliver.library.Application.Entities.BaseEntity;
 import com.oliver.library.Application.Entities.Abstract.Rental;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +23,8 @@ public abstract class RentalObject extends BaseEntity {
 
     private String description;
 
+    private String author;
+
     private boolean rented;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -34,11 +35,12 @@ public abstract class RentalObject extends BaseEntity {
 
     }
 
-    public RentalObject(String title, String genre, String physicalLocation, String description) {
+    public RentalObject(String title, String genre, String physicalLocation, String description, String author) {
         this.title = title;
         this.genre = genre;
         this.physicalLocation = physicalLocation;
         this.description = description;
+        this.author = author;
     }
 
     public abstract int getRentalPeriod();
@@ -48,35 +50,43 @@ public abstract class RentalObject extends BaseEntity {
     }
 
     public Set<Rental> getRentals() {
-        return rentals;
+        return this.rentals;
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public boolean isRented() {
-        return rented;
+        return this.rented;
+    }
+
+    public void setRented(boolean rented) {
+        this.rented = rented;
     }
 
     public String getGenre() {
-        return genre;
+        return this.genre;
     }
 
     public String getPhysicalLocation() {
-        return physicalLocation;
+        return this.physicalLocation;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public Set<Collaborator> getCollaborators() {
-        return collaborators;
+        return this.collaborators;
     }
 
     @Override
     public String toString() {
         return this.getTitle();
+    }
+
+    public String getAuthor() {
+        return this.author;
     }
 }

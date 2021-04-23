@@ -33,7 +33,7 @@ public class DataLoaderComponent implements ApplicationRunner {
 
     // Fill database with garbage data
     public void run(ApplicationArguments args) {
-        Book b1 = new Book("book1", "horror", "1b", "scary book", Year.of(2019), "12093124", false, false);
+        Book b1 = new Book("book1", "horror", "1b", "scary book", Year.of(2019), "12093124", "author", false, false);
         User u1 = new Student("jack", String.valueOf(new Random().nextDouble()), "test");
         // Rental r1 = new Rental(b1, u1);
 

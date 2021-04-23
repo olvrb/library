@@ -14,11 +14,11 @@ public class Book extends RentalObject {
 
     private boolean courseLiterature;
 
-    public Book(String title, String genre, String physicalLocation, String description, Year publicationYear, String ISBN, boolean reference, boolean courseLiterature) {
-        super(title, genre, physicalLocation, description);
+    public Book(String title, String genre, String physicalLocation, String description, Year publicationYear, String ISBN, String author, boolean reference, boolean courseLiterature) {
+        super(title, genre, physicalLocation, description, author);
         this.publicationYear = publicationYear;
         this.ISBN = ISBN;
-        this.reference = reference;
+        this.reference = this.reference;
         this.courseLiterature = courseLiterature;
     }
 
@@ -27,19 +27,19 @@ public class Book extends RentalObject {
     }
 
     public Year getPublicationYear() {
-        return publicationYear;
+        return this.publicationYear;
     }
 
     public String getISBN() {
-        return ISBN;
+        return this.ISBN;
     }
 
     public boolean isReference() {
-        return reference;
+        return this.reference;
     }
 
     public boolean isCourseLiterature() {
-        return courseLiterature;
+        return this.courseLiterature;
     }
 
     // If book is reference or course literature, can't rent at all. If other book, can rent for 30 days.

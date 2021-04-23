@@ -26,6 +26,10 @@ public class SignInDialog extends JDialog {
         this.getRootPane()
             .setDefaultButton(this.buttonOK);
 
+        this.setUpListeners();
+    }
+
+    private void setUpListeners() {
         this.buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 SignInDialog.this.onOK();
