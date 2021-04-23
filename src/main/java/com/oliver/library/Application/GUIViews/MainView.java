@@ -33,48 +33,79 @@ public class MainView {
 
     private JButton loanButton;
 
+    private JButton addObjectButton;
+
+    private JButton removeObjectButton;
+
     private LibraryApplicationGUI gui;
 
     private List<RentalObject> currentResults;
 
     public MainView(LibraryApplicationGUI gui) {
         this.gui = gui;
-        this.resultsListModel = new DefaultListModel<>();
-        this.setSearchResultsToModel();
 
-        this.signOutButton.setVisible(false);
-        this.loanButton.setVisible(false);
 
-        signUpButton.addActionListener(e -> {
-            this.gui.showSignUpDialog();
+        this.setUpResultsList();
+        this.setUpSpecialUI();
+        this.setUpListeners();
+
+    }
+
+    private void setUpListeners() {
+        this.signUpButton.addActionListener(e -> {
+            this.getGui()
+                .showSignUpDialog();
         });
 
-        signInButton.addActionListener(e -> {
-            this.gui.showSignInDialog();
+        this.signInButton.addActionListener(e -> {
+            this.getGui()
+                .showSignInDialog();
         });
-        signOutButton.addActionListener(e -> {
-            this.gui.signOut();
+        this.signOutButton.addActionListener(e -> {
+            this.getGui()
+                .signOut();
         });
 
-        ListenerServices.addChangeListener(searchField, e -> updateSearchResults(searchField.getText()));
+        ListenerServices.addChangeListener(this.searchField, e -> this.updateSearchResults());
 
-        loanButton.addActionListener(e -> {
+        this.loanButton.addActionListener(e -> {
             this.loan();
+        });
+
+        this.removeObjectButton.addActionListener(e -> {
+            this.removeObject();
         });
     }
 
-    private void updateSearchResults(String searchString) {
+    private void removeObject() {
+        this.getGui()
+            .removeRentalObject(this.resultsList.getSelectedValue());
+        this.updateSearchResults();
+    }
+
+    private void setUpResultsList() {
+        this.resultsListModel = new DefaultListModel<>();
+        this.setSearchResultsToModel();
+    }
+
+    private void setUpSpecialUI() {
+        this.signOutButton.setVisible(false);
+        this.loanButton.setVisible(false);
+        this.addObjectButton.setVisible(false);
+        this.removeObjectButton.setVisible(false);
+    }
+
+    private void updateSearchResults() {
         this.resultsListModel.removeAllElements();
+        this.currentResults = this.getGui()
+                                  .search(this.searchField.getText());
 
-        System.out.printf("Text updated: %s\n", searchString);
-
-        this.currentResults = gui.search(searchString);
-
-        this.resultsListModel.addAll(currentResults);
+        this.resultsListModel.addAll(this.currentResults);
     }
 
     private void loan() {
-        this.gui.loan(this.resultsList.getSelectedValue());
+        this.getGui()
+            .loan(this.resultsList.getSelectedValue());
     }
 
     private void setSearchResultsToModel() {
@@ -82,11 +113,11 @@ public class MainView {
     }
 
     public LibraryApplicationGUI getGui() {
-        return gui;
+        return this.gui;
     }
 
     public JPanel getMainView() {
-        return mainView;
+        return this.mainView;
     }
 
     public void updateUserInfo(User user) {
@@ -96,10 +127,13 @@ public class MainView {
                                                         user.getSsn()));
     }
 
-    public void setSignedInState(boolean signedIn) {
+    public void setSignedInState(boolean signedIn, boolean isAdmin) {
         this.signUpButton.setVisible(!signedIn);
         this.signInButton.setVisible(!signedIn);
         this.signOutButton.setVisible(signedIn);
         this.loanButton.setVisible(signedIn);
+
+        this.removeObjectButton.setVisible(signedIn && isAdmin);
+        this.addObjectButton.setVisible(signedIn && isAdmin);
     }
 }

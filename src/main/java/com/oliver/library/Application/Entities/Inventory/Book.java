@@ -42,6 +42,7 @@ public class Book extends RentalObject {
         return courseLiterature;
     }
 
+    // If book is reference or course literature, can't rent at all. If other book, can rent for 30 days.
     @Override
     public int getRentalPeriod() {
         if (this.reference || this.courseLiterature) return 0;

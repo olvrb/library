@@ -21,42 +21,42 @@ public class SignInDialog extends JDialog {
 
     public SignInDialog(LibraryApplicationGUI gui) {
         this.gui = gui;
-        setContentPane(contentPane);
-        setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+        this.setContentPane(this.contentPane);
+        this.setModal(true);
+        this.getRootPane()
+            .setDefaultButton(this.buttonOK);
 
-        buttonOK.addActionListener(new ActionListener() {
+        this.buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onOK();
+                SignInDialog.this.onOK();
             }
         });
 
-        buttonCancel.addActionListener(new ActionListener() {
+        this.buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onCancel();
+                SignInDialog.this.onCancel();
             }
         });
 
         // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                onCancel();
+                SignInDialog.this.onCancel();
             }
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
+        this.contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onCancel();
+                SignInDialog.this.onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onOK() {
         if (this.gui.authenticateUser(this.ssnField.getText(), new String(this.passwordField.getPassword()))) {
-            this.gui.signInOk();
-            dispose();
+            this.dispose();
         } else {
             this.passwordField.setText("");
         }
@@ -65,6 +65,6 @@ public class SignInDialog extends JDialog {
 
     private void onCancel() {
         // add your code here if necessary
-        dispose();
+        this.dispose();
     }
 }

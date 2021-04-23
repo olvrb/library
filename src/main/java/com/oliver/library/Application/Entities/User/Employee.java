@@ -8,7 +8,7 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Employee extends User {
     @OneToMany(fetch = FetchType.LAZY)
-    private Set<User> supervisees = new HashSet<>();
+    private final Set<User> supervisees = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User supervisor;
@@ -21,15 +21,20 @@ public class Employee extends User {
     }
 
     public Set<User> getSupervisees() {
-        return supervisees;
+        return this.supervisees;
     }
 
     public User getSupervisor() {
-        return supervisor;
+        return this.supervisor;
     }
 
     @Override
     public int getMaxRent() {
         return 7;
+    }
+
+    @Override
+    public boolean isAdmin() {
+        return true;
     }
 }

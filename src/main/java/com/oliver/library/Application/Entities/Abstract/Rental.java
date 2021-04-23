@@ -66,11 +66,13 @@ public class Rental implements Serializable {
         return user;
     }
 
+    // Calculate return date based on start data and rental period.
     public Date getReturnDate() {
         LocalDateTime date = this.startDate.toInstant()
                                            .atZone(ZoneId.systemDefault())
                                            .toLocalDateTime();
-        date.plusDays(this.rentalObject.getRentalPeriod());
+        int days = this.rentalObject.getRentalPeriod();
+        date = date.plusDays(days);
         return Date.from(date.atZone(ZoneId.systemDefault())
                              .toInstant());
 

@@ -53,7 +53,6 @@ public abstract class User extends BaseEntity {
     @OneToMany(mappedBy = "rentalObject", fetch = FetchType.EAGER)
     private Set<Rental> rentals = new HashSet<>();
 
-
     public User(String name, String ssn, String password) {
         this.name = name;
         this.ssn = ssn;
@@ -66,6 +65,10 @@ public abstract class User extends BaseEntity {
 
 
     public abstract int getMaxRent();
+
+    public boolean isAdmin() {
+        return false;
+    }
 
     // Get all rentals
     public Set<Rental> getRentals() {
@@ -90,7 +93,7 @@ public abstract class User extends BaseEntity {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public int currentlyRented() {
@@ -99,15 +102,15 @@ public abstract class User extends BaseEntity {
     }
 
     public String getSsn() {
-        return ssn;
+        return this.ssn;
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
-        this.password = hashPassword(password);
+        this.password = this.hashPassword(password);
     }
 
     private String hashPassword(String pw) {
