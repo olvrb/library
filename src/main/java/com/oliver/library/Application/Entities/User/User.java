@@ -32,14 +32,6 @@ import java.util.stream.Collectors;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class User extends BaseEntity {
-    @Autowired
-    @Transient
-    private static UserRepository userRepository;
-
-    @Autowired
-    @Transient
-    private static RentalRepository rentalRepository;
-
     @NotNull
     private String name;
 
@@ -63,6 +55,15 @@ public abstract class User extends BaseEntity {
 
     }
 
+    private static String hashPassword(String pw) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(pw);
+    }
+
+    // Only require password to be longer than 8 chars.
+    public static boolean validatePassword(String s) {
+        return s.length() > 8;
+    }
 
     public abstract int getMaxRent();
 
@@ -110,11 +111,6 @@ public abstract class User extends BaseEntity {
     }
 
     public void setPassword(String password) {
-        this.password = this.hashPassword(password);
-    }
-
-    private String hashPassword(String pw) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder.encode(pw);
+        this.password = hashPassword(password);
     }
 }

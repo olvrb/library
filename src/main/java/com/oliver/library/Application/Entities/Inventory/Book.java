@@ -18,7 +18,7 @@ public class Book extends RentalObject {
         super(title, genre, physicalLocation, description, author);
         this.publicationYear = publicationYear;
         this.ISBN = ISBN;
-        this.reference = this.reference;
+        this.reference = reference;
         this.courseLiterature = courseLiterature;
     }
 
