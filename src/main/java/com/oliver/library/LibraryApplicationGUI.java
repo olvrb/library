@@ -5,6 +5,7 @@ import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.Entities.User.User;
 import com.oliver.library.Application.Exceptions.InvalidLoanException;
 import com.oliver.library.Application.Exceptions.RentalObjectRentedException;
+import com.oliver.library.Application.GUIViews.AddRentalObjectDialog;
 import com.oliver.library.Application.GUIViews.Authentication.SignInDialog;
 import com.oliver.library.Application.GUIViews.Authentication.SignUpDialog;
 import com.oliver.library.Application.GUIViews.MainView;
@@ -77,6 +78,10 @@ public class LibraryApplicationGUI {
         return this.showDialog(new SignInDialog(this));
     }
 
+    public JDialog showAddRentalObjectDialog() {
+        return this.showDialog(new AddRentalObjectDialog(this));
+    }
+
     public User getCurrentUser() {
         return this.control.getCurrentUser();
     }
@@ -119,6 +124,7 @@ public class LibraryApplicationGUI {
 
     public boolean saveObject(RentalObject obj) {
         this.libraryService.save(obj);
+        return true;
     }
 
     public void signOut() {

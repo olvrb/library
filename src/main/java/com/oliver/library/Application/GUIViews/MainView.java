@@ -49,9 +49,14 @@ public class MainView {
         this.setUpSpecialUI();
         this.setUpListeners();
 
+
     }
 
     private void setUpListeners() {
+        this.addObjectButton.addActionListener(e -> {
+            this.getGui()
+                .showAddRentalObjectDialog();
+        });
         this.signUpButton.addActionListener(e -> {
             this.getGui()
                 .showSignUpDialog();
