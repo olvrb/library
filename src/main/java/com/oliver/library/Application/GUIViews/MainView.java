@@ -141,10 +141,12 @@ public class MainView extends GUIView {
 
         this.loanButton.addActionListener(e -> {
             this.loan();
+            this.updateSearchResults();
         });
 
         this.removeObjectButton.addActionListener(e -> {
             this.removeObject();
+            this.updateSearchResults();
         });
     }
 
@@ -152,7 +154,6 @@ public class MainView extends GUIView {
     private void removeObject() {
         this.getGui()
             .removeRentalObject(this.resultsList.getSelectedValue());
-        this.updateSearchResults();
     }
 
     private void setUpResultsList() {

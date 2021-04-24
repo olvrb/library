@@ -4,6 +4,7 @@ package com.oliver.library.Application.Entities.Inventory;
 import com.oliver.library.Application.Entities.Abstract.Collaborator;
 import com.oliver.library.Application.Entities.BaseEntity;
 import com.oliver.library.Application.Entities.Abstract.Rental;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -68,7 +69,7 @@ public abstract class RentalObject extends BaseEntity {
 
     // Find the first Rental that is currently not returned.
     public Rental getCurrentRental() {
-        for (Rental r : this.rentals) {
+        for (Rental r : this.getRentals()) {
             if (!r.returned()) return r;
         }
         return null;

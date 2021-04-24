@@ -25,7 +25,7 @@ public class ListenerServices {
      *
      * @param text           any text component, such as a {@link JTextField}
      *                       or {@link JTextArea}
-     * @param changeListener a listener to receieve {@link ChangeEvent}s
+     * @param changeListener a listener to receive {@link ChangeEvent}s
      *                       when the text is changed; the source object for the events
      *                       will be the text component
      * @throws NullPointerException if either parameter is null
@@ -38,20 +38,20 @@ public class ListenerServices {
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-                changedUpdate(e);
+                this.changedUpdate(e);
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                changedUpdate(e);
+                this.changedUpdate(e);
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                lastChange++;
+                this.lastChange++;
                 SwingUtilities.invokeLater(() -> {
-                    if (lastNotifiedChange != lastChange) {
-                        lastNotifiedChange = lastChange;
+                    if (this.lastNotifiedChange != this.lastChange) {
+                        this.lastNotifiedChange = this.lastChange;
                         changeListener.stateChanged(new ChangeEvent(text));
                     }
                 });
