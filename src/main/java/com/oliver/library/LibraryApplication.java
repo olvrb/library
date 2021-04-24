@@ -13,6 +13,8 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("com.oliver.library")
 public class LibraryApplication {
 
+
+    // Maybe move currentUser to LibraryApplicationGUI?
     private User currentUser;
 
     private LibraryApplicationGUI gui;
@@ -31,7 +33,7 @@ public class LibraryApplication {
     }
 
     public User getCurrentUser() {
-        return currentUser;
+        return this.currentUser;
     }
 
     public void setCurrentUser(User currentUser) {

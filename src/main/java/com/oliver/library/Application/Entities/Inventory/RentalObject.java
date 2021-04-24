@@ -58,6 +58,7 @@ public abstract class RentalObject extends BaseEntity {
     }
 
     public boolean isRented() {
+        // If RentalObject has at least one unreturned rental, it's deemed rented.
         for (Rental r : this.rentals) {
             if (!r.returned()) return true;
         }

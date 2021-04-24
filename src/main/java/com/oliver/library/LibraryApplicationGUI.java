@@ -14,14 +14,12 @@ import com.oliver.library.Application.Services.LibraryService;
 import com.oliver.library.Application.Services.UserService;
 import com.oliver.library.Application.Services.UserRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.NestedExceptionUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 
 import javax.naming.AuthenticationException;
 import javax.swing.*;
 import java.awt.*;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Controller
@@ -64,18 +62,20 @@ public class LibraryApplicationGUI {
 
 
     private void initializeUI() {
+        Dimension size = this.getWindowSize();
+
         this.mainView = new MainView(this);
         this.mainFrame = new JFrame("Library");
         this.mainFrame.setContentPane(this.mainView.getMainView());
         this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.mainFrame.setSize(500, 700);
+        this.mainFrame.setSize((int)size.getWidth(), (int)size.getHeight());
         this.setCentered();
-        // mainFrame.pack();
+        // this.mainFrame.pack();
         this.mainFrame.setVisible(true);
     }
 
     private void setCentered() {
-        Dimension dim = this.getCenter();
+        Dimension dim = this.getScreenDimension();
 
         this.mainFrame.setLocation(dim.width / 2 - this.mainFrame.getSize().width / 2,
                                    dim.height / 2 - this.mainFrame.getSize().height / 2);
@@ -99,7 +99,9 @@ public class LibraryApplicationGUI {
 
     // Update gui to match signed in state.
     public void signInOk(User user) {
+        this.control.setCurrentUser(user);
         this.mainView.setSignedInState(true, user.isAdmin());
+        this.mainView.updateUserInfo(user);
     }
 
 
@@ -111,16 +113,22 @@ public class LibraryApplicationGUI {
         return dialog;
     }
 
-    private Dimension getCenter() {
+    private Dimension getScreenDimension() {
         return Toolkit.getDefaultToolkit()
                       .getScreenSize();
     }
 
+    // Calculate width and height to cover about half of the screen. 0.5 is just an arbitrary number that I found works well.
+    private Dimension getWindowSize() {
+        Dimension screen = this.getScreenDimension();
+        double baseRatio = 0.5;
+        return new Dimension((int)(screen.getWidth() * baseRatio), (int)(screen.getHeight() * baseRatio));
+    }
+
+
     public boolean authenticateUser(String ssn, String pw) {
         try {
             User user = this.userService.getAuthenticatedUser(ssn, pw);
-            this.control.setCurrentUser(user);
-            this.mainView.updateUserInfo(user);
             this.signInOk(user);
             return true;
         } catch (AuthenticationException e) {
@@ -175,7 +183,7 @@ public class LibraryApplicationGUI {
         // TODO: Format better?
         try {
             Rental r = this.userRentalService.loan(this.getCurrentUser(), object);
-            this.quickMessageDialog(String.format("%s (id: %s) rented from %s until %s.",
+            this.quickMessageDialog(String.format("%s (id: %s) rented from\n%s \nuntil \n%s.",
                                                   object.getTitle(),
                                                   object.getId(),
                                                   r.getStartDate(),
