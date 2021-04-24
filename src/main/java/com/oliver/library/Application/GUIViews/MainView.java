@@ -59,8 +59,6 @@ public class MainView extends GUIView {
     public MainView(LibraryApplicationGUI gui) {
         this.gui = gui;
 
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setViewportView(this.resultsList);
         this.setUpSpecialInput();
         this.setUpResultsList();
         this.setUpSpecialUI();
