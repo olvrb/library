@@ -9,6 +9,8 @@ import java.util.List;
 public interface RentalObjectRepository extends CrudRepository<RentalObject, String> {
     List<RentalObject> findByTitleContainingIgnoreCaseAndRentedFalse(String title);
 
+    List<RentalObject> findByTitleContainingIgnoreCase(String title);
+
     List<RentalObject> findByCollaboratorsNameContainingIgnoreCase(String collaboratorName);
 
     List<Book> findByISBN(String ISBN);

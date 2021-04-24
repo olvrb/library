@@ -61,7 +61,6 @@ public class MainView extends GUIView {
 
         this.setUpSpecialInput();
         this.setUpResultsList();
-        this.setUpSpecialUI();
         this.setUpListeners();
     }
 
@@ -69,9 +68,9 @@ public class MainView extends GUIView {
     protected void setUpSpecialInput() {
         this.setJComponentsVisible(this.adminComponents, false);
         this.setJComponentsVisible(this.signedInComponents, false);
-        this.specialInput.addAll(this.joinLists(this.signedInComponents,
-                                                this.adminComponents,
-                                                this.signedOutComponents));
+        this.addAllSpecialInput(this.joinLists(this.signedInComponents,
+                                               this.adminComponents,
+                                               this.signedOutComponents));
     }
 
     public void setSignedInState(boolean signedIn, boolean isAdmin) {
@@ -127,15 +126,10 @@ public class MainView extends GUIView {
         this.setSearchResultsToModel();
     }
 
-    private void setUpSpecialUI() {
-
-    }
-
     private void updateSearchResults() {
         this.resultsListModel.removeAllElements();
         this.currentResults = this.getGui()
                                   .search(this.searchField.getText());
-
         this.resultsListModel.addAll(this.currentResults);
     }
 

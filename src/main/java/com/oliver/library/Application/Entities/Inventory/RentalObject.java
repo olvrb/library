@@ -12,8 +12,8 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class RentalObject extends BaseEntity {
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<Rental> rentals = new HashSet<>();
+    @OneToMany(mappedBy = "rentalObject", fetch = FetchType.EAGER)
+    private Set<Rental> rentals;
 
     private String title;
 
@@ -58,7 +58,10 @@ public abstract class RentalObject extends BaseEntity {
     }
 
     public boolean isRented() {
-        return this.rented;
+        for (Rental r : this.rentals) {
+            if (!r.returned()) return true;
+        }
+        return false;
     }
 
     public void setRented(boolean rented) {

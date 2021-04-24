@@ -110,7 +110,7 @@ public class AddRentalObjectDialog extends BaseJDialog {
 
     @Override
     protected void setUpSpecialInput() {
-        this.specialInput.addAll(this.joinLists(this.bookComponents, this.filmComponents));
+        this.addAllSpecialInput(this.joinLists(this.bookComponents, this.filmComponents));
         super.setUpSpecialInput();
     }
 

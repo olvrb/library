@@ -42,7 +42,7 @@ public abstract class User extends BaseEntity {
     @NotNull
     private String password;
 
-    @OneToMany(mappedBy = "rentalObject", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Rental> rentals = new HashSet<>();
 
     public User(String name, String ssn, String password) {

@@ -4,10 +4,15 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class GUIView extends JDialog {
-    protected List<JComponent> specialInput = new ArrayList<>();
+    private List<JComponent> specialInput = new ArrayList<>();
+
+    protected void addAllSpecialInput(Collection<JComponent> components) {
+        this.specialInput.addAll(components);
+    }
 
     // Generically merge an infinite number of lists to one.
     protected <T> List<T> joinLists(List<T>... args) {

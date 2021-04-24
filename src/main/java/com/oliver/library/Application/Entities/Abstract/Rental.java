@@ -13,7 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Entity
-public class Rental implements Serializable {
+public class Rental {
     private final boolean returned = false;
 
     private final Date startDate = new Date();
@@ -47,23 +47,23 @@ public class Rental implements Serializable {
     }
 
     public RentalKey getId() {
-        return id;
+        return this.id;
     }
 
     public boolean isReturned() {
-        return returned;
+        return this.returned;
     }
 
     public Date getStartDate() {
-        return startDate;
+        return this.startDate;
     }
 
     public RentalObject getRentalObject() {
-        return rentalObject;
+        return this.rentalObject;
     }
 
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     // Calculate return date based on start data and rental period.

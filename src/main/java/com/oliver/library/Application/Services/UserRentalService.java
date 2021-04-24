@@ -21,9 +21,9 @@ public class UserRentalService {
     public Rental loan(User user, RentalObject object) throws InvalidLoanException {
         if (user.canRent(object)) {
             Rental newRental = new Rental(object, user);
-            object.setRented(true);
+            // object.setRented(true);
             this.rentalRepository.save(newRental);
-            this.rentalObjectRepository.save(object);
+            // this.rentalObjectRepository.save(object);
             return newRental;
         } else throw new InvalidLoanException("Can not loan this object.");
     }
