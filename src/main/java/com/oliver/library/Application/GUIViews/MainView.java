@@ -37,6 +37,10 @@ public class MainView extends GUIView {
 
     private JButton removeObjectButton;
 
+    private JButton returnButton;
+
+    private JButton editObjectButton;
+
     private LibraryApplicationGUI gui;
 
     private List<RentalObject> currentResults;
@@ -48,7 +52,8 @@ public class MainView extends GUIView {
 
     private List<JComponent> adminComponents = Arrays.asList(new JComponent[] {
             this.removeObjectButton,
-            this.addObjectButton
+            this.addObjectButton,
+            this.editObjectButton
     });
 
     private List<JComponent> signedOutComponents = Arrays.asList(new JComponent[] {
@@ -62,6 +67,8 @@ public class MainView extends GUIView {
         this.setUpSpecialInput();
         this.setUpResultsList();
         this.setUpListeners();
+
+
     }
 
     @Override
@@ -85,23 +92,49 @@ public class MainView extends GUIView {
         }
     }
 
+    private void edit() {
+        RentalObject obj = this.resultsList.getSelectedValue();
+        if (obj != null) {
+            this.getGui()
+                .edit(obj);
+        } else {
+            this.getGui()
+                .showError("Select object to edit.");
+        }
+    }
+
     private void setUpListeners() {
+        this.editObjectButton.addActionListener(e -> {
+            this.edit();
+            this.updateSearchResults();
+        });
+
+        this.returnButton.addActionListener(e -> {
+            this.getGui()
+                .showReturnDialog();
+            this.updateSearchResults();
+        });
+
         this.addObjectButton.addActionListener(e -> {
             this.getGui()
                 .showAddRentalObjectDialog();
+            this.updateSearchResults();
         });
         this.signUpButton.addActionListener(e -> {
             this.getGui()
                 .showSignUpDialog();
+            this.updateSearchResults();
         });
 
         this.signInButton.addActionListener(e -> {
             this.getGui()
                 .showSignInDialog();
+            this.updateSearchResults();
         });
         this.signOutButton.addActionListener(e -> {
             this.getGui()
                 .signOut();
+            this.updateSearchResults();
         });
 
         ListenerServices.addChangeListener(this.searchField, e -> this.updateSearchResults());
@@ -114,6 +147,7 @@ public class MainView extends GUIView {
             this.removeObject();
         });
     }
+
 
     private void removeObject() {
         this.getGui()

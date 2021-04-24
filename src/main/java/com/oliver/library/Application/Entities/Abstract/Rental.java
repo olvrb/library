@@ -14,9 +14,9 @@ import java.util.Date;
 
 @Entity
 public class Rental {
-    private final boolean returned = false;
-
     private final Date startDate = new Date();
+
+    private boolean returned = false;
 
     @EmbeddedId
     private RentalKey id;
@@ -31,15 +31,19 @@ public class Rental {
     @JoinColumn(name = "user_id")
     private User user;
 
-
     public Rental(RentalObject rentalObject, User user) {
         this.rentalObject = rentalObject;
         this.user = user;
         this.id = new RentalKey(rentalObject.getId(), user.getId());
     }
 
+
     public Rental() {
 
+    }
+
+    public void setReturned(boolean returned) {
+        this.returned = returned;
     }
 
     public boolean returned() {
@@ -48,10 +52,6 @@ public class Rental {
 
     public RentalKey getId() {
         return this.id;
-    }
-
-    public boolean isReturned() {
-        return this.returned;
     }
 
     public Date getStartDate() {

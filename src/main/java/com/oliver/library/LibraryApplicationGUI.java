@@ -5,14 +5,16 @@ import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.Entities.User.User;
 import com.oliver.library.Application.Exceptions.InvalidLoanException;
 import com.oliver.library.Application.Exceptions.RentalObjectRentedException;
-import com.oliver.library.Application.GUIViews.AddRentalObjectDialog;
+import com.oliver.library.Application.GUIViews.EditRentalObjectDialog;
 import com.oliver.library.Application.GUIViews.Authentication.SignInDialog;
 import com.oliver.library.Application.GUIViews.Authentication.SignUpDialog;
 import com.oliver.library.Application.GUIViews.MainView;
+import com.oliver.library.Application.GUIViews.Rental.ReturnDialog;
 import com.oliver.library.Application.Services.AdminService;
 import com.oliver.library.Application.Services.LibraryService;
 import com.oliver.library.Application.Services.UserService;
 import com.oliver.library.Application.Services.UserRentalService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -81,21 +83,28 @@ public class LibraryApplicationGUI {
                                    dim.height / 2 - this.mainFrame.getSize().height / 2);
     }
 
-    public JDialog showSignInDialog() {
-        return this.showDialog(new SignInDialog(this));
-    }
 
     public JDialog showAddRentalObjectDialog() {
-        return this.showDialog(new AddRentalObjectDialog(this));
+        return this.showDialog(new EditRentalObjectDialog(this));
     }
 
     public User getCurrentUser() {
         return this.control.getCurrentUser();
     }
 
+
     public void showSignUpDialog() {
         this.showDialog(new SignUpDialog(this));
     }
+
+    public void showReturnDialog() {
+        this.showDialog(new ReturnDialog(this));
+    }
+
+    public JDialog showSignInDialog() {
+        return this.showDialog(new SignInDialog(this));
+    }
+
 
     // Update gui to match signed in state.
     public void signInOk(User user) {
@@ -105,6 +114,7 @@ public class LibraryApplicationGUI {
     }
 
 
+    // Standard procedure for showing a dialog.
     private JDialog showDialog(JDialog dialog) {
         dialog.pack();
         dialog.setLocationByPlatform(true);
@@ -192,5 +202,21 @@ public class LibraryApplicationGUI {
         } catch (InvalidLoanException e) {
             this.showError(e);
         }
+    }
+
+    public boolean returnObject(String id) {
+        // If no rental is found, show error.
+        try {
+            RentalObject obj = this.userRentalService.markRentalStatusForRentalObjectId(id, true);
+            this.quickMessageDialog(String.format("Returned object %s (%s)", obj.getTitle(), obj.getId()));
+        } catch (NotFoundException e) {
+            this.showError(e);
+            return false;
+        }
+        return true;
+    }
+
+    public void edit(RentalObject obj) {
+        this.showDialog(new EditRentalObjectDialog(this, obj));
     }
 }

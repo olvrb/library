@@ -7,5 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface RentalRepository extends CrudRepository<Rental, RentalKey> {
     Rental findByIdRentalObjectIdAndIdUserId(String rentalObjectId, String userId);
 
+    Rental findByIdRentalObjectId(String rentalObjectId);
+
     Rental findByReturnedFalse();
 }

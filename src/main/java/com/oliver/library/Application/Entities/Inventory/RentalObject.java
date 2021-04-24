@@ -59,14 +59,19 @@ public abstract class RentalObject extends BaseEntity {
 
     public boolean isRented() {
         // If RentalObject has at least one unreturned rental, it's deemed rented.
-        for (Rental r : this.rentals) {
-            if (!r.returned()) return true;
-        }
-        return false;
+        return this.getCurrentRental() != null;
     }
 
     public void setRented(boolean rented) {
         this.rented = rented;
+    }
+
+    // Find the first Rental that is currently not returned.
+    public Rental getCurrentRental() {
+        for (Rental r : this.rentals) {
+            if (!r.returned()) return r;
+        }
+        return null;
     }
 
     public String getGenre() {

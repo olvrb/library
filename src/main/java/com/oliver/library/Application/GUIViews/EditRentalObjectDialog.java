@@ -3,20 +3,19 @@ package com.oliver.library.Application.GUIViews;
 import com.oliver.library.Application.Entities.Inventory.Book;
 import com.oliver.library.Application.Entities.Inventory.Film;
 import com.oliver.library.Application.Entities.Inventory.Journal;
+import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.Services.ListenerServices;
 import com.oliver.library.LibraryApplicationGUI;
-import net.bytebuddy.asm.Advice;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.time.Year;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class AddRentalObjectDialog extends BaseJDialog {
+
+// TODO: Maybe this could be used to edit RentalObjects as well?
+public class EditRentalObjectDialog extends BaseJDialog {
     private JPanel contentPane;
 
     private JButton buttonOK;
@@ -84,12 +83,14 @@ public class AddRentalObjectDialog extends BaseJDialog {
 
     private LibraryApplicationGUI gui;
 
-    public AddRentalObjectDialog(LibraryApplicationGUI gui) {
+    private RentalObject object;
+
+    public EditRentalObjectDialog(LibraryApplicationGUI gui) {
         this();
         this.gui = gui;
     }
 
-    public AddRentalObjectDialog() {
+    public EditRentalObjectDialog() {
         this.setContentPane(this.contentPane);
         this.setModal(true);
         this.getRootPane()
@@ -101,8 +102,36 @@ public class AddRentalObjectDialog extends BaseJDialog {
 
     }
 
+    public EditRentalObjectDialog(LibraryApplicationGUI gui, RentalObject obj) {
+        this(gui);
+
+        this.object = obj;
+
+        this.titleField.setText(obj.getTitle());
+        this.genreField.setText(obj.getGenre());
+        this.physicalLocationField.setText(obj.getPhysicalLocation());
+        this.descriptionField.setText(obj.getDescription());
+
+        // Fill fields with class specific attributes, and select correct typeList index.
+        if (obj instanceof Book) {
+            this.publicationYearField.setText(((Book)obj).getPublicationYear()
+                                                         .toString());
+            this.isbnField.setText(((Book)obj).getISBN());
+            this.referenceBox.setSelected(((Book)obj).isReference());
+            this.courseLiteratureBox.setSelected(((Book)obj).isCourseLiterature());
+            this.typeList.setSelectedIndex(1);
+        } else if (obj instanceof Film) {
+            this.productionCountryField.setText(((Film)obj).getProductionCountry());
+            this.ageLimitField.setText(((Film)obj).getAgeLimit());
+            this.typeList.setSelectedIndex(2);
+        } else {
+            this.typeList.setSelectedIndex(3);
+        }
+
+    }
+
     public static void main(String[] args) {
-        JDialog dialog = new AddRentalObjectDialog();
+        JDialog dialog = new EditRentalObjectDialog();
         dialog.pack();
         dialog.setLocationByPlatform(true);
         dialog.setVisible(true);
@@ -167,32 +196,33 @@ public class AddRentalObjectDialog extends BaseJDialog {
             this.updateSpecialInput();
         });
 
-        this.buttonOK.addActionListener(e -> AddRentalObjectDialog.this.onOK());
+        this.buttonOK.addActionListener(e -> EditRentalObjectDialog.this.onOK());
 
-        this.buttonCancel.addActionListener(e -> AddRentalObjectDialog.this.onCancel());
+        this.buttonCancel.addActionListener(e -> EditRentalObjectDialog.this.onCancel());
 
         // call onCancel() when cross is clicked
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                AddRentalObjectDialog.this.onCancel();
+                EditRentalObjectDialog.this.onCancel();
             }
         });
 
         // call onCancel() on ESCAPE
-        this.contentPane.registerKeyboardAction(e -> AddRentalObjectDialog.this.onCancel(),
+        this.contentPane.registerKeyboardAction(e -> EditRentalObjectDialog.this.onCancel(),
                                                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
                                                 JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onOK() {
         boolean success = true;
+        RentalObject newObject = null;
         // Since we're dealing with class *names*, we can't use genericism or polymorphism :(
         switch ((String)this.typeList.getSelectedItem()) {
             case "Book": {
                 // Only field which requires validation is year. We don't care if the other fields are empty 🤷‍
                 if (this.validateYear()) {
-                    Book book = new Book(this.titleField.getText(),
+                    newObject = new Book(this.titleField.getText(),
                                          this.genreField.getText(),
                                          this.physicalLocationField.getText(),
                                          this.descriptionField.getText(),
@@ -202,37 +232,37 @@ public class AddRentalObjectDialog extends BaseJDialog {
                                          this.authorField.getText(),
                                          this.referenceBox.isSelected(),
                                          this.courseLiteratureBox.isSelected());
-                    this.gui.saveObject(book);
                 } else {
                     success = false;
                 }
                 break;
             }
             case "Film": {
-                Film film = new Film(this.titleField.getText(),
+                newObject = new Film(this.titleField.getText(),
                                      this.genreField.getText(),
                                      this.physicalLocationField.getText(),
                                      this.descriptionField.getText(),
                                      this.authorField.getText(),
                                      this.ageLimitField.getText(),
                                      this.productionCountryField.getText());
-                this.gui.saveObject(film);
                 break;
             }
             case "Journal": {
-                Journal journal = new Journal(this.titleField.getText(),
-                                              this.genreField.getText(),
-                                              this.physicalLocationField.getText(),
-                                              this.descriptionField.getText(),
-                                              this.authorField.getText());
-                this.gui.saveObject(journal);
+                newObject = new Journal(this.titleField.getText(),
+                                        this.genreField.getText(),
+                                        this.physicalLocationField.getText(),
+                                        this.descriptionField.getText(),
+                                        this.authorField.getText());
                 break;
             }
             default: {
                 break;
             }
         }
-        if (success) {
+        if (success && newObject != null) {
+            // If existing object exists, inherit its id.
+            if (this.object != null) newObject.setId(this.object.getId());
+            this.gui.saveObject(newObject);
             this.dispose();
         } else {
             this.gui.showError("Invalid field(s).");

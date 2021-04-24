@@ -17,6 +17,10 @@ public class BaseEntity {
     }
 
     public String getId() {
-        return Id;
+        return this.Id;
+    }
+
+    public void setId(String id) {
+        this.Id = id;
     }
 }
