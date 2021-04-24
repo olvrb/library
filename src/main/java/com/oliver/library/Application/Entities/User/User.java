@@ -65,6 +65,11 @@ public abstract class User extends BaseEntity {
         return s.length() > 8;
     }
 
+    // easy standard format
+    public static boolean validateSsn(String s) {
+        return s.length() == 10;
+    }
+
     public abstract int getMaxRent();
 
     public boolean isAdmin() {
@@ -97,6 +102,10 @@ public abstract class User extends BaseEntity {
         return this.name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int currentlyRented() {
         return this.getCurrentRentals()
                    .size();
@@ -104,6 +113,10 @@ public abstract class User extends BaseEntity {
 
     public String getSsn() {
         return this.ssn;
+    }
+
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
     }
 
     public String getPassword() {

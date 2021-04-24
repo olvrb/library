@@ -12,7 +12,7 @@ import java.util.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MainView {
+public class MainView extends GUIView {
     private JPanel mainView;
 
     private JButton signUpButton;
@@ -41,15 +41,51 @@ public class MainView {
 
     private List<RentalObject> currentResults;
 
+    private List<JComponent> signedInComponents = Arrays.asList(new JComponent[] {
+            this.loanButton,
+            this.signOutButton
+    });
+
+    private List<JComponent> adminComponents = Arrays.asList(new JComponent[] {
+            this.removeObjectButton,
+            this.addObjectButton
+    });
+
+    private List<JComponent> signedOutComponents = Arrays.asList(new JComponent[] {
+            this.signInButton,
+            this.signUpButton
+    });
+
     public MainView(LibraryApplicationGUI gui) {
         this.gui = gui;
 
-
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setViewportView(this.resultsList);
+        this.setUpSpecialInput();
         this.setUpResultsList();
         this.setUpSpecialUI();
         this.setUpListeners();
+    }
 
+    @Override
+    protected void setUpSpecialInput() {
+        this.setJComponentsVisible(this.adminComponents, false);
+        this.setJComponentsVisible(this.signedInComponents, false);
+        this.specialInput.addAll(this.joinLists(this.signedInComponents,
+                                                this.adminComponents,
+                                                this.signedOutComponents));
+    }
 
+    public void setSignedInState(boolean signedIn, boolean isAdmin) {
+        if (signedIn) {
+            this.setJComponentsVisible(this.signedInComponents, true);
+            this.setJComponentsVisible(this.signedOutComponents, false);
+            if (isAdmin) this.setJComponentsVisible(this.adminComponents, true);
+        } else {
+            this.setJComponentsVisible(this.signedInComponents, false);
+            this.setJComponentsVisible(this.adminComponents, false);
+            this.setJComponentsVisible(this.signedOutComponents, true);
+        }
     }
 
     private void setUpListeners() {
@@ -94,10 +130,7 @@ public class MainView {
     }
 
     private void setUpSpecialUI() {
-        this.signOutButton.setVisible(false);
-        this.loanButton.setVisible(false);
-        this.addObjectButton.setVisible(false);
-        this.removeObjectButton.setVisible(false);
+
     }
 
     private void updateSearchResults() {
@@ -109,8 +142,14 @@ public class MainView {
     }
 
     private void loan() {
-        this.getGui()
-            .loan(this.resultsList.getSelectedValue());
+        RentalObject obj = this.resultsList.getSelectedValue();
+        if (obj != null) {
+            this.getGui()
+                .loan(obj);
+        } else {
+            this.getGui()
+                .showError("Select object to loan.");
+        }
     }
 
     private void setSearchResultsToModel() {
@@ -132,13 +171,5 @@ public class MainView {
                                                         user.getSsn()));
     }
 
-    public void setSignedInState(boolean signedIn, boolean isAdmin) {
-        this.signUpButton.setVisible(!signedIn);
-        this.signInButton.setVisible(!signedIn);
-        this.signOutButton.setVisible(signedIn);
-        this.loanButton.setVisible(signedIn);
 
-        this.removeObjectButton.setVisible(signedIn && isAdmin);
-        this.addObjectButton.setVisible(signedIn && isAdmin);
-    }
 }

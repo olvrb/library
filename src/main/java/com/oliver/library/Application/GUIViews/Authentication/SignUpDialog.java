@@ -1,16 +1,16 @@
 package com.oliver.library.Application.GUIViews.Authentication;
 
+import com.oliver.library.Application.Entities.User.GeneralUser;
 import com.oliver.library.Application.Entities.User.User;
+import com.oliver.library.Application.GUIViews.BaseJDialog;
 import com.oliver.library.Application.Services.ListenerServices;
 import com.oliver.library.LibraryApplicationGUI;
 
 import javax.swing.*;
-import javax.swing.text.JTextComponent;
-import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 
-public class SignUpDialog extends JDialog {
+public class SignUpDialog extends BaseJDialog {
     private JPanel contentPane;
 
     private JButton buttonOK;
@@ -56,32 +56,32 @@ public class SignUpDialog extends JDialog {
         return valid;
     }
 
-    private void validateSsn() {
-        
+
+    private boolean validatePasswordVerificationField() {
+        // If both field are valid, and the main password field is valid, mark border accordingly.
+        boolean valid = this.validatePasswordField() && Arrays.equals(this.passwordField.getPassword(),
+                                                                      this.passwordVerificationField.getPassword());
+        this.markFieldValid(this.passwordVerificationField, valid);
+
+        return valid;
     }
 
-    private void validatePasswordVerificationField(JPasswordField passwordVerificationField) {
-        if (this.validatePasswordField()) {
-            this.markFieldValid(passwordVerificationField,
-                                Arrays.equals(this.passwordField.getPassword(),
-                                              this.passwordVerificationField.getPassword()));
-        }
+    private boolean validateSsn() {
+        boolean valid = User.validateSsn(this.ssnField.getText());
+        this.markFieldValid(this.ssnField, valid);
+        return valid;
     }
 
-    private void markFieldValid(JTextComponent component, boolean valid) {
-        this.setFieldBorder(component, valid ? Color.green : Color.RED);
-    }
-
-    private void setFieldBorder(JComponent component, Color c) {
-        component.setBorder(BorderFactory.createLineBorder(c));
-    }
 
     private void setUpListeners() {
         ListenerServices.addChangeListener(this.passwordField, e -> {
             this.validatePasswordField();
         });
         ListenerServices.addChangeListener(this.passwordVerificationField, e -> {
-            this.validatePasswordVerificationField(this.passwordVerificationField);
+            this.validatePasswordVerificationField();
+        });
+        ListenerServices.addChangeListener(this.ssnField, e -> {
+            this.validateSsn();
         });
 
         this.buttonOK.addActionListener(e -> this.onOK());
@@ -104,12 +104,20 @@ public class SignUpDialog extends JDialog {
 
 
     private void onOK() {
-        // add your code here
-        this.dispose();
+        // Create user if fields are valid.
+        // Close window if create user is successful.
+        // This signup method can only create general users.
+        // If a user wants student, employee, or researcher privileges, they will theoretically need to be change by employees.
+        if (this.validatePasswordVerificationField() && this.validateSsn()) {
+            if (this.gui.createUser(new GeneralUser(this.nameField.getText(),
+                                                    this.ssnField.getText(),
+                                                    new String(this.passwordField.getPassword())))) {
+                this.dispose();
+            }
+        }
     }
 
     private void onCancel() {
-        // add your code here if necessary
         this.dispose();
     }
 }

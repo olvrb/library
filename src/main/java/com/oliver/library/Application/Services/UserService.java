@@ -16,12 +16,12 @@ import javax.naming.AuthenticationException;
 import java.util.Optional;
 
 @Service
-public class UserAuthenticationService {
+public class UserService {
     @Autowired
     private UserRepository userRepository;
 
     public User getAuthenticatedUser(String ssn, String pw) throws AuthenticationException {
-        Optional<User> user = userRepository.findBySsn(ssn);
+        Optional<User> user = this.userRepository.findBySsn(ssn);
         String error = "Invalid username or password.";
 
         // If user is not found, return null.
@@ -35,5 +35,11 @@ public class UserAuthenticationService {
                                                                             .getPassword())) {
                 return user.get();
             } else throw new AuthenticationException(error);
+    }
+
+
+    public User createUser(User u) {
+        this.userRepository.save(u);
+        return u;
     }
 }

@@ -11,14 +11,17 @@ import com.oliver.library.Application.GUIViews.Authentication.SignUpDialog;
 import com.oliver.library.Application.GUIViews.MainView;
 import com.oliver.library.Application.Services.AdminService;
 import com.oliver.library.Application.Services.LibraryService;
-import com.oliver.library.Application.Services.UserAuthenticationService;
+import com.oliver.library.Application.Services.UserService;
 import com.oliver.library.Application.Services.UserRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.NestedExceptionUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 
 import javax.naming.AuthenticationException;
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Controller
@@ -31,7 +34,7 @@ public class LibraryApplicationGUI {
     private LibraryApplication control;
 
     @Autowired
-    private UserAuthenticationService userService;
+    private UserService userService;
 
     @Autowired
     private LibraryService libraryService;
@@ -48,7 +51,11 @@ public class LibraryApplicationGUI {
     }
 
     public void showError(Exception error) {
-        this.quickMessageDialog(error.getMessage());
+        this.showError(error.getMessage());
+    }
+
+    public void showError(String s) {
+        this.quickMessageDialog(s);
     }
 
     public void quickMessageDialog(String s) {
@@ -120,6 +127,17 @@ public class LibraryApplicationGUI {
             this.showError(e);
             return false;
         }
+    }
+
+    public boolean createUser(User u) {
+        // Catch duplicate SSN exception. Not very safe, allows for easier brute force but 🤷‍
+        try {
+            this.userService.createUser(u);
+        } catch (DataIntegrityViolationException e) {
+            this.showError("User is already registered.");
+            return false;
+        }
+        return true;
     }
 
     public boolean saveObject(RentalObject obj) {

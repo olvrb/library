@@ -1,15 +1,22 @@
 package com.oliver.library.Application.GUIViews;
 
 import com.oliver.library.Application.Entities.Inventory.Book;
+import com.oliver.library.Application.Entities.Inventory.Film;
+import com.oliver.library.Application.Entities.Inventory.Journal;
+import com.oliver.library.Application.Services.ListenerServices;
 import com.oliver.library.LibraryApplicationGUI;
+import net.bytebuddy.asm.Advice;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class AddRentalObjectDialog extends JDialog {
+public class AddRentalObjectDialog extends BaseJDialog {
     private JPanel contentPane;
 
     private JButton buttonOK;
@@ -74,6 +81,7 @@ public class AddRentalObjectDialog extends JDialog {
             this.ageLimitLabel
     });
 
+
     private LibraryApplicationGUI gui;
 
     public AddRentalObjectDialog(LibraryApplicationGUI gui) {
@@ -87,6 +95,7 @@ public class AddRentalObjectDialog extends JDialog {
         this.getRootPane()
             .setDefaultButton(this.buttonOK);
 
+        this.setUpTypeList();
         this.setUpListeners();
         this.setUpSpecialInput();
 
@@ -99,29 +108,16 @@ public class AddRentalObjectDialog extends JDialog {
         dialog.setVisible(true);
     }
 
-    private void setUpSpecialInput() {
-        this.hideSpecialInput();
-    }
-
-    private void setSpecialInputVisible(boolean visible) {
-        this.setJComponentsVisible(this.bookComponents, visible);
-        this.setJComponentsVisible(this.filmComponents, visible);
-    }
-
-    private void hideSpecialInput() {
-        this.setSpecialInputVisible(false);
-    }
-
-    private void setJComponentsVisible(List<JComponent> components, boolean visible) {
-        for (JComponent c : components) {
-            c.setVisible(visible);
-        }
-        this.pack();
+    @Override
+    protected void setUpSpecialInput() {
+        this.specialInput.addAll(this.joinLists(this.bookComponents, this.filmComponents));
+        super.setUpSpecialInput();
     }
 
     private void updateSpecialInput() {
         this.hideSpecialInput();
         // Since we're dealing with class *names*, we can't use genericism or polymorphism :(
+        // I don't believe it's possible to store classes in a JComboBox :(s
         // Journals also don't have any special fields.
         switch ((String)this.typeList.getSelectedItem()) {
             case "Book": {
@@ -138,7 +134,35 @@ public class AddRentalObjectDialog extends JDialog {
         }
     }
 
+    private void setUpTypeList() {
+        this.typeList.insertItemAt("", 0);
+        this.typeList.setSelectedIndex(0);
+    }
+
+    private boolean validateYear() {
+        try {
+            this.getYearValue();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    private void validateYearField() {
+        // If field contains number and is a valid Java Year, mark field as valid. Else invalid.
+
+        this.markFieldValid(this.publicationYearField, this.validateYear());
+    }
+
+    private Year getYearValue() {
+        return Year.of(Integer.parseInt(this.publicationYearField.getText()));
+    }
+
+
     private void setUpListeners() {
+        ListenerServices.addChangeListener(this.publicationYearField, e -> {
+            this.validateYearField();
+        });
         this.typeList.addActionListener(e -> {
             this.updateSpecialInput();
         });
@@ -161,37 +185,59 @@ public class AddRentalObjectDialog extends JDialog {
                                                 JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    // TODO: do this for film and journal
-    // TODO: add constructors to film and journal
     private void onOK() {
+        boolean success = true;
         // Since we're dealing with class *names*, we can't use genericism or polymorphism :(
         switch ((String)this.typeList.getSelectedItem()) {
             case "Book": {
-                Book book = new Book(this.titleField.getText(),
-                                     this.genreField.getText(),
-                                     this.physicalLocationField.getText(),
-                                     this.descriptionField.getText(),
-                                     // TODO: catch error
-                                     Year.of(Integer.parseInt(this.publicationYearField.getText())),
-                                     this.isbnField.getText(),
-                                     this.authorField.getText(),
-                                     this.referenceBox.isSelected(),
-                                     this.courseLiteratureBox.isSelected());
-                this.gui.saveObject(book);
+                // Only field which requires validation is year. We don't care if the other fields are empty 🤷‍
+                if (this.validateYear()) {
+                    Book book = new Book(this.titleField.getText(),
+                                         this.genreField.getText(),
+                                         this.physicalLocationField.getText(),
+                                         this.descriptionField.getText(),
+                                         // TODO: catch error
+                                         this.getYearValue(),
+                                         this.isbnField.getText(),
+                                         this.authorField.getText(),
+                                         this.referenceBox.isSelected(),
+                                         this.courseLiteratureBox.isSelected());
+                    this.gui.saveObject(book);
+                } else {
+                    success = false;
+                }
                 break;
             }
             case "Film": {
+                Film film = new Film(this.titleField.getText(),
+                                     this.genreField.getText(),
+                                     this.physicalLocationField.getText(),
+                                     this.descriptionField.getText(),
+                                     this.authorField.getText(),
+                                     this.ageLimitField.getText(),
+                                     this.productionCountryField.getText());
+                this.gui.saveObject(film);
                 break;
             }
             case "Journal": {
-
+                Journal journal = new Journal(this.titleField.getText(),
+                                              this.genreField.getText(),
+                                              this.physicalLocationField.getText(),
+                                              this.descriptionField.getText(),
+                                              this.authorField.getText());
+                this.gui.saveObject(journal);
+                break;
             }
             default: {
                 break;
             }
         }
-        // add your code here
-        this.dispose();
+        if (success) {
+            this.dispose();
+        } else {
+            this.gui.showError("Invalid field(s).");
+
+        }
     }
 
     private void onCancel() {
