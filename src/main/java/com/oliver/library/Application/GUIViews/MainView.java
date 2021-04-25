@@ -1,16 +1,15 @@
 package com.oliver.library.Application.GUIViews;
 
+import com.oliver.library.Application.Entities.Inventory.Book;
+import com.oliver.library.Application.Entities.Inventory.Film;
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.Entities.User.User;
 import com.oliver.library.Application.Services.ListenerServices;
 import com.oliver.library.LibraryApplicationGUI;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import java.awt.event.ComponentAdapter;
 import java.util.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainView extends GUIView {
     private JPanel mainView;
@@ -41,6 +40,10 @@ public class MainView extends GUIView {
 
     private JButton editObjectButton;
 
+    private JComboBox comboBox1;
+
+    private JTextArea infoArea;
+
     private LibraryApplicationGUI gui;
 
     private List<RentalObject> currentResults;
@@ -69,6 +72,7 @@ public class MainView extends GUIView {
         this.setUpListeners();
 
 
+        this.resultsList.addComponentListener(new ComponentAdapter() { });
     }
 
     @Override
@@ -148,6 +152,37 @@ public class MainView extends GUIView {
             this.removeObject();
             this.updateSearchResults();
         });
+
+        this.resultsList.addListSelectionListener(e -> {
+            this.updateInfoArea(this.resultsList.getSelectedValue());
+        });
+    }
+
+    private void updateInfoArea(RentalObject object) {
+        if (object != null) {
+            this.infoArea.setText(String.format(
+                    "Type: %s\nTitle: %s\nGenre: %s\nPhysical Location: %s\nDescription: %s\nAuthor: %s\n",
+                    // Bad practice but works for now.
+                    object.getClass()
+                          .getSimpleName(),
+                    object.getTitle(),
+                    object.getGenre(),
+                    object.getPhysicalLocation(),
+                    object.getDescription(),
+                    object.getAuthor()));
+            if (object instanceof Book) {
+                this.infoArea.append(String.format(
+                        "Publication year: %s\nISBN: %s\nReference Literature: %s\nCourse Literature: %s\n",
+                        ((Book)object).getPublicationYear(),
+                        ((Book)object).getISBN(),
+                        ((Book)object).isReference(),
+                        ((Book)object).isCourseLiterature()));
+            } else if (object instanceof Film) {
+                this.infoArea.append(String.format("Age Limit: %s\nProduction Country: %s\n",
+                                                   ((Film)object).getAgeLimit(),
+                                                   ((Film)object).getProductionCountry()));
+            }
+        }
     }
 
 
@@ -171,8 +206,13 @@ public class MainView extends GUIView {
     private void loan() {
         RentalObject obj = this.resultsList.getSelectedValue();
         if (obj != null) {
-            this.getGui()
-                .loan(obj);
+            if (obj.isRented()) {
+                this.getGui()
+                    .reserve(obj);
+            } else {
+                this.getGui()
+                    .loan(obj);
+            }
         } else {
             this.getGui()
                 .showError("Select object to loan.");

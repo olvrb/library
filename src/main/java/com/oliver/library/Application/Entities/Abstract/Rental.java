@@ -14,7 +14,7 @@ import java.util.Date;
 
 @Entity
 public class Rental {
-    private final Date startDate = new Date();
+    private Date startDate = new Date();
 
     private boolean returned = false;
 
@@ -37,7 +37,6 @@ public class Rental {
         this.id = new RentalKey(rentalObject.getId(), user.getId());
     }
 
-
     public Rental() {
 
     }
@@ -56,6 +55,10 @@ public class Rental {
 
     public Date getStartDate() {
         return this.startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public RentalObject getRentalObject() {

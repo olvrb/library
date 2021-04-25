@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import javax.naming.AuthenticationException;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -194,6 +195,20 @@ public class LibraryApplicationGUI {
         try {
             Rental r = this.userRentalService.loan(this.getCurrentUser(), object);
             this.quickMessageDialog(String.format("%s (id: %s) rented from\n%s \nuntil \n%s.",
+                                                  object.getTitle(),
+                                                  object.getId(),
+                                                  r.getStartDate(),
+                                                  r.getReturnDate()
+                                                   .toString()));
+        } catch (InvalidLoanException e) {
+            this.showError(e);
+        }
+    }
+
+    public void reserve(RentalObject object) {
+        try {
+            Rental r = this.userRentalService.reserve(this.getCurrentUser(), object, object.getNextRentDate());
+            this.quickMessageDialog(String.format("%s (id: %s) reserved from\n%s \nuntil \n%s.",
                                                   object.getTitle(),
                                                   object.getId(),
                                                   r.getStartDate(),

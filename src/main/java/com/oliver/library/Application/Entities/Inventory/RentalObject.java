@@ -7,6 +7,7 @@ import com.oliver.library.Application.Entities.Abstract.Rental;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,8 +26,6 @@ public abstract class RentalObject extends BaseEntity {
     private String description;
 
     private String author;
-
-    private boolean rented;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "rental_object_collaborators", joinColumns = @JoinColumn(name = "rental_object_id"), inverseJoinColumns = @JoinColumn(name = "collaborators_id"))
@@ -63,16 +62,16 @@ public abstract class RentalObject extends BaseEntity {
         return this.getCurrentRental() != null;
     }
 
-    public void setRented(boolean rented) {
-        this.rented = rented;
-    }
-
     // Find the first Rental that is currently not returned.
     public Rental getCurrentRental() {
         for (Rental r : this.getRentals()) {
             if (!r.returned()) return r;
         }
         return null;
+    }
+
+    public Date getNextRentDate() {
+        return this.getCurrentRental().getReturnDate();
     }
 
     public String getGenre() {
@@ -93,7 +92,7 @@ public abstract class RentalObject extends BaseEntity {
 
     @Override
     public String toString() {
-        return this.getTitle();
+        return this.isRented() ? String.format("%s (rented)", this.getTitle()) : this.getTitle();
     }
 
     public String getAuthor() {

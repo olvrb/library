@@ -6,8 +6,10 @@ import com.oliver.library.Application.Repositories.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class LibraryService {
@@ -16,9 +18,7 @@ public class LibraryService {
 
     public List<RentalObject> getAvailableRentalObjects(String searchString) {
         // return this.rentalObjectRepository.findByTitleContainingIgnoreCaseAndRentedFalse(searchString);
-        List<RentalObject> searchResult = this.rentalObjectRepository.findByTitleContainingIgnoreCaseAndRentedFalse(
-                searchString);
-        searchResult.removeIf(x -> x.isRented());
+        List<RentalObject> searchResult = this.rentalObjectRepository.findByTitleContainingIgnoreCase(searchString);
         return searchResult;
     }
 
