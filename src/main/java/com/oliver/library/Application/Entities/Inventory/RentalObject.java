@@ -2,13 +2,11 @@ package com.oliver.library.Application.Entities.Inventory;
 
 
 import com.oliver.library.Application.Entities.Abstract.Collaborator;
-import com.oliver.library.Application.Entities.BaseEntity;
 import com.oliver.library.Application.Entities.Abstract.Rental;
-import org.hibernate.Hibernate;
+import com.oliver.library.Application.Entities.BaseEntity;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity

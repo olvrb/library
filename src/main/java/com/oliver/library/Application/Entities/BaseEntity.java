@@ -1,9 +1,7 @@
 package com.oliver.library.Application.Entities;
 
-import org.codehaus.jackson.map.Serializers;
-import org.springframework.context.annotation.Primary;
-
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.util.UUID;
 
 @MappedSuperclass

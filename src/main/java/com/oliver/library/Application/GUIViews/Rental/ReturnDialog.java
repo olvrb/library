@@ -4,7 +4,9 @@ import com.oliver.library.Application.GUIViews.BaseJDialog;
 import com.oliver.library.LibraryApplicationGUI;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ReturnDialog extends BaseJDialog {
     private JPanel contentPane;

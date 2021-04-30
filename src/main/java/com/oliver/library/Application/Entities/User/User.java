@@ -1,22 +1,14 @@
 package com.oliver.library.Application.Entities.User;
 
 
-import ch.qos.logback.classic.util.ContextSelectorStaticBinder;
+import com.oliver.library.Application.Entities.Abstract.Rental;
 import com.oliver.library.Application.Entities.BaseEntity;
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
-import com.oliver.library.Application.Entities.Abstract.Rental;
-import com.oliver.library.Application.Exceptions.InvalidLoanException;
-import com.oliver.library.Application.Repositories.RentalRepository;
-import com.oliver.library.Application.Repositories.UserRepository;
 import com.sun.istack.NotNull;
-import org.hibernate.Hibernate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.naming.AuthenticationException;
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

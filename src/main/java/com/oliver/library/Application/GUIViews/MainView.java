@@ -9,7 +9,8 @@ import com.oliver.library.LibraryApplicationGUI;
 
 import javax.swing.*;
 import java.awt.event.ComponentAdapter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainView extends GUIView {
     private JPanel mainView;

@@ -2,14 +2,8 @@ package com.oliver.library.Application.Services;
 
 import com.oliver.library.Application.Entities.User.User;
 import com.oliver.library.Application.Repositories.UserRepository;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.naming.AuthenticationException;

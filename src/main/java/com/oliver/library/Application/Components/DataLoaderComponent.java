@@ -1,6 +1,5 @@
 package com.oliver.library.Application.Components;
 
-import com.oliver.library.Application.Entities.Abstract.Rental;
 import com.oliver.library.Application.Entities.Inventory.Book;
 import com.oliver.library.Application.Entities.User.Student;
 import com.oliver.library.Application.Entities.User.User;
