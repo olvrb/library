@@ -40,7 +40,7 @@ public class MainView extends GUIView {
 
     private JButton editObjectButton;
 
-    private JComboBox comboBox1;
+    private JComboBox searchProperty;
 
     private JTextArea infoArea;
 
@@ -199,7 +199,10 @@ public class MainView extends GUIView {
     private void updateSearchResults() {
         this.resultsListModel.removeAllElements();
         this.currentResults = this.getGui()
-                                  .search(this.searchField.getText());
+                                  .searchBy(this.searchField.getText(),
+                                            this.searchProperty.getSelectedItem()
+                                                               .toString()
+                                                               .toLowerCase());
         this.resultsListModel.addAll(this.currentResults);
     }
 

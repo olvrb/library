@@ -119,12 +119,17 @@
           <text value="Return object"/>
         </properties>
       </component>
-      <component id="1988" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+      <component id="1988" class="javax.swing.JComboBox" binding="searchProperty">
         <constraints>
           <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <model/>
+          <model>
+            <item value="Title"/>
+            <item value="Author"/>
+            <item value="ISBN"/>
+            <item value="Genre"/>
+          </model>
         </properties>
       </component>
       <component id="4cdb0" class="javax.swing.JButton" binding="removeObjectButton" default-binding="true">

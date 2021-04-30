@@ -14,6 +14,7 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class RentalObject extends BaseEntity {
+    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "rentalObject", fetch = FetchType.EAGER)
     private Set<Rental> rentals;
 
@@ -71,7 +72,8 @@ public abstract class RentalObject extends BaseEntity {
     }
 
     public Date getNextRentDate() {
-        return this.getCurrentRental().getReturnDate();
+        return this.getCurrentRental()
+                   .getReturnDate();
     }
 
     public String getGenre() {

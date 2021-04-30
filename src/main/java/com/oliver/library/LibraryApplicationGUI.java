@@ -22,7 +22,7 @@ import org.springframework.stereotype.Controller;
 import javax.naming.AuthenticationException;
 import javax.swing.*;
 import java.awt.*;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -170,8 +170,30 @@ public class LibraryApplicationGUI {
         this.mainView.setSignedInState(false, false);
     }
 
+    public List<RentalObject> searchBy(String searchString, String property) {
+        // Get RentalObject by respective properties.
+        // Default case is empty list.
+        switch (property) {
+            case "title": {
+                return this.libraryService.getRentalObjectsByTitle(searchString);
+            }
+            case "author": {
+                return this.libraryService.getRentalObjectsByAuthor(searchString);
+            }
+            case "isbn": {
+                return this.libraryService.getRentalObjectsByIsbn(searchString);
+            }
+            case "genre": {
+                return this.libraryService.getRentalObjectsByGenre(searchString);
+            }
+            default: {
+                return new ArrayList<>();
+            }
+        }
+    }
+
     public List<RentalObject> search(String searchString) {
-        return this.libraryService.getAvailableRentalObjects(searchString);
+        return this.libraryService.getRentalObjectsByTitle(searchString);
     }
 
     // Remove object if user is logged in and is admin.

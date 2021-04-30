@@ -1,11 +1,13 @@
 package com.oliver.library.Application.Services;
 
+import com.oliver.library.Application.Entities.Abstract.Rental;
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.Repositories.RentalObjectRepository;
 import com.oliver.library.Application.Repositories.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -16,10 +18,24 @@ public class LibraryService {
     @Autowired
     private RentalObjectRepository rentalObjectRepository;
 
-    public List<RentalObject> getAvailableRentalObjects(String searchString) {
+    public List<RentalObject> getRentalObjectsByTitle(String searchString) {
         // return this.rentalObjectRepository.findByTitleContainingIgnoreCaseAndRentedFalse(searchString);
         List<RentalObject> searchResult = this.rentalObjectRepository.findByTitleContainingIgnoreCase(searchString);
         return searchResult;
+    }
+
+    public List<RentalObject> getRentalObjectsByAuthor(String searchString) {
+        return this.rentalObjectRepository.findByAuthorContainingIgnoreCase(searchString);
+    }
+
+    public List<RentalObject> getRentalObjectsByIsbn(String searchString) {
+        ArrayList<RentalObject> objs = new ArrayList<>();
+        objs.addAll(this.rentalObjectRepository.findByISBN(searchString));
+        return objs;
+    }
+
+    public List<RentalObject> getRentalObjectsByGenre(String searchString) {
+        return this.rentalObjectRepository.findByGenreContainingIgnoreCase(searchString);
     }
 
     public void save(RentalObject obj) {
