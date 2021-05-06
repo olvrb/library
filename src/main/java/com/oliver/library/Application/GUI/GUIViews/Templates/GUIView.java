@@ -1,4 +1,4 @@
-package com.oliver.library.Application.GUIViews;
+package com.oliver.library.Application.GUI.GUIViews.Templates;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;

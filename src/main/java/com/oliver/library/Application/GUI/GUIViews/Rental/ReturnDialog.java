@@ -1,7 +1,7 @@
-package com.oliver.library.Application.GUIViews.Rental;
+package com.oliver.library.Application.GUI.GUIViews.Rental;
 
-import com.oliver.library.Application.GUIViews.BaseJDialog;
-import com.oliver.library.LibraryApplicationGUI;
+import com.oliver.library.Application.GUI.GUIViews.Templates.BaseJDialog;
+import com.oliver.library.Application.GUI.LibraryApplicationGUI;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;

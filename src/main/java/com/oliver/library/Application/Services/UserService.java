@@ -23,12 +23,13 @@ public class UserService {
         // Else return null.
         if (user.isEmpty()) {
             throw new AuthenticationException(error);
-        } else //noinspection ConstantConditions
-            if (user.isPresent() && new BCryptPasswordEncoder().matches(pw,
-                                                                        user.get()
-                                                                            .getPassword())) {
-                return user.get();
-            } else throw new AuthenticationException(error);
+
+            //noinspection ConstantConditions
+        } else if (user.isPresent() && new BCryptPasswordEncoder().matches(pw,
+                                                                           user.get()
+                                                                               .getPassword())) {
+            return user.get();
+        } else throw new AuthenticationException(error);
     }
 
 

@@ -1,6 +1,6 @@
-package com.oliver.library.Application.GUIViews.Authentication;
+package com.oliver.library.Application.GUI.GUIViews.Authentication;
 
-import com.oliver.library.LibraryApplicationGUI;
+import com.oliver.library.Application.GUI.LibraryApplicationGUI;
 
 import javax.swing.*;
 import java.awt.event.*;

@@ -14,9 +14,7 @@ public class LibraryService {
     private RentalObjectRepository rentalObjectRepository;
 
     public List<RentalObject> getRentalObjectsByTitle(String searchString) {
-        // return this.rentalObjectRepository.findByTitleContainingIgnoreCaseAndRentedFalse(searchString);
-        List<RentalObject> searchResult = this.rentalObjectRepository.findByTitleContainingIgnoreCase(searchString);
-        return searchResult;
+        return this.rentalObjectRepository.findByTitleContainingIgnoreCase(searchString);
     }
 
     public List<RentalObject> getRentalObjectsByAuthor(String searchString) {
@@ -24,9 +22,8 @@ public class LibraryService {
     }
 
     public List<RentalObject> getRentalObjectsByIsbn(String searchString) {
-        ArrayList<RentalObject> objs = new ArrayList<>();
-        objs.addAll(this.rentalObjectRepository.findByISBN(searchString));
-        return objs;
+        // Turn List<Book> into a List<RentalObject>.
+        return new ArrayList<>(this.rentalObjectRepository.findByISBN(searchString));
     }
 
     public List<RentalObject> getRentalObjectsByGenre(String searchString) {

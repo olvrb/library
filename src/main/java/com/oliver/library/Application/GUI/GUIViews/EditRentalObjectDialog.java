@@ -1,11 +1,12 @@
-package com.oliver.library.Application.GUIViews;
+package com.oliver.library.Application.GUI.GUIViews;
 
 import com.oliver.library.Application.Entities.Inventory.Book;
 import com.oliver.library.Application.Entities.Inventory.Film;
 import com.oliver.library.Application.Entities.Inventory.Journal;
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
+import com.oliver.library.Application.GUI.GUIViews.Templates.BaseJDialog;
 import com.oliver.library.Application.Services.ListenerServices;
-import com.oliver.library.LibraryApplicationGUI;
+import com.oliver.library.Application.GUI.LibraryApplicationGUI;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -16,7 +17,6 @@ import java.util.Arrays;
 import java.util.List;
 
 
-// TODO: Maybe this could be used to edit RentalObjects as well?
 public class EditRentalObjectDialog extends BaseJDialog {
     private JPanel contentPane;
 

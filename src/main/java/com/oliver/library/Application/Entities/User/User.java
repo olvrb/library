@@ -82,7 +82,7 @@ public abstract class User extends BaseEntity {
 
     public boolean canRentOrReserve(RentalObject object) {
         // Check if user is allowed to rent books, and if the object can be rented.
-        return this.allowedToRent(); // && object.canBeRented();
+        return this.allowedToRent() && object.canBeRentedOrReserved();
     }
 
     public boolean allowedToRent() {

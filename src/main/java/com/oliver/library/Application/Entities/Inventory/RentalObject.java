@@ -44,8 +44,8 @@ public abstract class RentalObject extends BaseEntity {
 
     public abstract int getRentalPeriod();
 
-    public boolean canBeRented() {
-        return this.getRentalPeriod() > 0 && !this.isRented();
+    public boolean canBeRentedOrReserved() {
+        return this.getRentalPeriod() > 0;
     }
 
     public Set<Rental> getRentals() {

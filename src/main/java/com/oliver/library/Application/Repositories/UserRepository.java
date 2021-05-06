@@ -12,7 +12,5 @@ public interface UserRepository extends CrudRepository<User, String> {
 
     User findFirstByName(String name);
 
-    Optional<User> findBySsnAndPassword(String ssn, String password);
-
     Optional<User> findBySsn(String ssn);
 }
