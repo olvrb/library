@@ -1,4 +1,4 @@
 # library
 
 ## Setup
-Change database connection info in src/main/resources/application.properties.
+Change database connection info in [application.properties](src/main/resources/application.properties).
