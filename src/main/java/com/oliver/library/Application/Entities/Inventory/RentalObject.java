@@ -1,7 +1,6 @@
 package com.oliver.library.Application.Entities.Inventory;
 
 
-import com.oliver.library.Application.Entities.Abstract.Collaborator;
 import com.oliver.library.Application.Entities.Abstract.Rental;
 import com.oliver.library.Application.Entities.BaseEntity;
 
@@ -26,9 +25,9 @@ public abstract class RentalObject extends BaseEntity {
 
     private String author;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "rental_object_collaborators", joinColumns = @JoinColumn(name = "rental_object_id"), inverseJoinColumns = @JoinColumn(name = "collaborators_id"))
-    private Set<Collaborator> collaborators;
+    //    @ManyToMany(fetch = FetchType.EAGER)
+    //    @JoinTable(name = "rental_object_collaborators", joinColumns = @JoinColumn(name = "rental_object_id"), inverseJoinColumns = @JoinColumn(name = "collaborators_id"))
+    //    private Set<Collaborator> collaborators;
 
     public RentalObject() {
 
@@ -86,9 +85,9 @@ public abstract class RentalObject extends BaseEntity {
         return this.description;
     }
 
-    public Set<Collaborator> getCollaborators() {
-        return this.collaborators;
-    }
+    //    public Set<Collaborator> getCollaborators() {
+    //        return this.collaborators;
+    //    }
 
     @Override
     public String toString() {

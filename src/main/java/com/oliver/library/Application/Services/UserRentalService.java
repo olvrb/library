@@ -42,9 +42,12 @@ public class UserRentalService {
         return object.getCurrentRental();
     }
 
-    public RentalObject markRentalStatusForRentalObjectId(String id, boolean status) throws NotFoundException {
-        RentalObject obj = this.rentalObjectRepository.findById(id)
-                                                      .orElse(null);
+    public RentalObject getRentalObjectById(String id) {
+        return this.rentalObjectRepository.findById(id)
+                                          .orElse(null);
+    }
+
+    public RentalObject markRentalStatusForRentalObject(RentalObject obj, boolean status) throws NotFoundException {
         if (obj == null) throw new NotFoundException("Object not found");
         else {
             Rental r = obj.getCurrentRental();

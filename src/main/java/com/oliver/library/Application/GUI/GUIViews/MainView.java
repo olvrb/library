@@ -9,6 +9,8 @@ import com.oliver.library.Application.Services.ListenerServices;
 import com.oliver.library.Application.GUI.LibraryApplicationGUI;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.util.Arrays;
 import java.util.List;
@@ -46,13 +48,16 @@ public class MainView extends GUIView {
 
     private JTextArea infoArea;
 
+    private JButton currentLoansButton;
+
     private LibraryApplicationGUI gui;
 
     private List<RentalObject> currentResults;
 
     private List<JComponent> signedInComponents = Arrays.asList(new JComponent[] {
             this.loanButton,
-            this.signOutButton
+            this.signOutButton,
+            this.currentLoansButton
     });
 
     private List<JComponent> adminComponents = Arrays.asList(new JComponent[] {
@@ -75,6 +80,7 @@ public class MainView extends GUIView {
 
 
         this.resultsList.addComponentListener(new ComponentAdapter() { });
+
     }
 
     @Override
@@ -110,6 +116,12 @@ public class MainView extends GUIView {
     }
 
     private void setUpListeners() {
+
+        this.currentLoansButton.addActionListener(e -> {
+            this.getGui()
+                .showCurrentLoansDialog();
+        });
+
         this.editObjectButton.addActionListener(e -> {
             this.edit();
             this.updateSearchResults();

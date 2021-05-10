@@ -1,18 +1,26 @@
 package com.oliver.library.Application.Services;
 
+import com.oliver.library.Application.Entities.Abstract.Rental;
 import com.oliver.library.Application.Entities.User.User;
+import com.oliver.library.Application.Repositories.RentalRepository;
 import com.oliver.library.Application.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.naming.AuthenticationException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Optional;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RentalRepository rentalRepository;
+
 
     public User getAuthenticatedUser(String ssn, String pw) throws AuthenticationException {
         Optional<User> user = this.userRepository.findBySsn(ssn);
@@ -30,6 +38,15 @@ public class UserService {
                                                                                .getPassword())) {
             return user.get();
         } else throw new AuthenticationException(error);
+    }
+
+    public User getUser(String id) {
+        return this.userRepository.findById(id)
+                                  .orElse(null);
+    }
+
+    public void refreshUserRentals(User u) {
+        u.setRentals(this.rentalRepository.findByIdUserId(u.getId()));
     }
 
 
