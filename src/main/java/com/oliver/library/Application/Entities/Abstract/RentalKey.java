@@ -3,6 +3,7 @@ package com.oliver.library.Application.Entities.Abstract;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.util.Objects;
 
 // Combined primary key for Rental
 @Embeddable
@@ -29,5 +30,18 @@ public class RentalKey implements Serializable {
 
     public String getRentalObjectId() {
         return this.rentalObjectId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+        RentalKey rentalKey = (RentalKey)o;
+        return this.userId.equals(rentalKey.userId) && this.rentalObjectId.equals(rentalKey.rentalObjectId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.userId, this.rentalObjectId);
     }
 }
