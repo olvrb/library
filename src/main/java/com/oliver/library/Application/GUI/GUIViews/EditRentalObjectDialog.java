@@ -5,7 +5,7 @@ import com.oliver.library.Application.Entities.Inventory.Film;
 import com.oliver.library.Application.Entities.Inventory.Journal;
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.GUI.GUIViews.Templates.BaseJDialog;
-import com.oliver.library.Application.Services.ListenerServices;
+import com.oliver.library.Application.Services.ListenerService;
 import com.oliver.library.Application.GUI.LibraryApplicationGUI;
 
 import javax.swing.*;
@@ -85,7 +85,7 @@ public class EditRentalObjectDialog extends BaseJDialog {
 
     private LibraryApplicationGUI gui;
 
-    private RentalObject object;
+    private RentalObject oldObject;
 
     public EditRentalObjectDialog(LibraryApplicationGUI gui) {
         this();
@@ -107,7 +107,7 @@ public class EditRentalObjectDialog extends BaseJDialog {
     public EditRentalObjectDialog(LibraryApplicationGUI gui, RentalObject obj) {
         this(gui);
 
-        this.object = obj;
+        this.oldObject = obj;
 
         this.titleField.setText(obj.getTitle());
         this.genreField.setText(obj.getGenre());
@@ -129,7 +129,6 @@ public class EditRentalObjectDialog extends BaseJDialog {
         } else {
             this.typeList.setSelectedIndex(3);
         }
-
     }
 
     public static void main(String[] args) {
@@ -147,7 +146,7 @@ public class EditRentalObjectDialog extends BaseJDialog {
 
     private void updateSpecialInput() {
         this.hideSpecialInput();
-        // Since we're dealing with class *names*, we can't use genericism or polymorphism :(
+        // Since we're dealing with class *names*, we can't use generic methods or polymorphism :(
         // I don't believe it's possible to store classes in a JComboBox :(s
         // Journals also don't have any special fields.
         switch ((String)this.typeList.getSelectedItem()) {
@@ -165,6 +164,7 @@ public class EditRentalObjectDialog extends BaseJDialog {
         }
     }
 
+    // Insert empty item at the top
     private void setUpTypeList() {
         this.typeList.insertItemAt("", 0);
         this.typeList.setSelectedIndex(0);
@@ -190,8 +190,9 @@ public class EditRentalObjectDialog extends BaseJDialog {
     }
 
 
+    // Button and various component listeners
     private void setUpListeners() {
-        ListenerServices.addChangeListener(this.publicationYearField, e -> {
+        ListenerService.addChangeListener(this.publicationYearField, e -> {
             this.validateYearField();
         });
         this.typeList.addActionListener(e -> {
@@ -219,7 +220,7 @@ public class EditRentalObjectDialog extends BaseJDialog {
     private void onOK() {
         boolean success = true;
         RentalObject newObject = null;
-        // Since we're dealing with class *names*, we can't use genericism or polymorphism :(
+        // Since we're dealing with class *names*, we can't use generic methods or polymorphism :(
         switch ((String)this.typeList.getSelectedItem()) {
             case "Book": {
                 // Only field which requires validation is year. We don't care if the other fields are empty 🤷‍
@@ -228,7 +229,6 @@ public class EditRentalObjectDialog extends BaseJDialog {
                                          this.genreField.getText(),
                                          this.physicalLocationField.getText(),
                                          this.descriptionField.getText(),
-                                         // TODO: catch error
                                          this.getYearValue(),
                                          this.isbnField.getText(),
                                          this.authorField.getText(),
@@ -263,17 +263,15 @@ public class EditRentalObjectDialog extends BaseJDialog {
         }
         if (success && newObject != null) {
             // If existing object exists, inherit its id.
-            if (this.object != null) newObject.setId(this.object.getId());
+            if (this.oldObject != null) newObject.setId(this.oldObject.getId());
             this.gui.saveObject(newObject);
             this.dispose();
         } else {
             this.gui.showError("Invalid field(s).");
-
         }
     }
 
     private void onCancel() {
-        // add your code here if necessary
         this.dispose();
     }
 }

@@ -11,19 +11,17 @@ import com.oliver.library.Application.GUI.GUIViews.EditRentalObjectDialog;
 import com.oliver.library.Application.GUI.GUIViews.MainView;
 import com.oliver.library.Application.GUI.GUIViews.Rental.CurrentLoansDialog;
 import com.oliver.library.Application.GUI.GUIViews.Rental.ReturnDialog;
-import com.oliver.library.Application.Services.AdminService;
-import com.oliver.library.Application.Services.LibraryService;
-import com.oliver.library.Application.Services.UserRentalService;
-import com.oliver.library.Application.Services.UserService;
+import com.oliver.library.Application.GUI.GUIViews.Rental.UnreturnedLoansDialog;
+import com.oliver.library.Application.Services.DataServices.AdminService;
+import com.oliver.library.Application.Services.DataServices.LibraryService;
+import com.oliver.library.Application.Services.DataServices.UserRentalService;
+import com.oliver.library.Application.Services.DataServices.UserService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.AuthenticationException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -115,6 +113,10 @@ public class LibraryApplicationGUI {
         this.showDialog(new CurrentLoansDialog(this));
     }
 
+    public void showUnreturnedLoansDialog() {
+        this.showDialog(new UnreturnedLoansDialog(this));
+    }
+
 
     // Update gui to match signed in state.
     public void signInOk(User user) {
@@ -146,6 +148,7 @@ public class LibraryApplicationGUI {
 
 
     public boolean authenticateUser(String ssn, String pw) {
+        // Try to auth user with provided credentials. If fails, show error
         try {
             User user = this.userService.getAuthenticatedUser(ssn, pw);
             this.signInOk(user);
@@ -172,6 +175,7 @@ public class LibraryApplicationGUI {
         return true;
     }
 
+    // Null out current user, update user info, and set correct state.
     public void signOut() {
         this.setCurrentUser(null);
         this.mainView.updateUserInfo(null);
@@ -200,6 +204,8 @@ public class LibraryApplicationGUI {
         }
     }
 
+    // Old search method
+    @Deprecated
     public List<RentalObject> search(String searchString) {
         return this.libraryService.getRentalObjectsByTitle(searchString);
     }
@@ -215,6 +221,7 @@ public class LibraryApplicationGUI {
         }
     }
 
+    // Can edit information if is signed in and user is admin.
     public boolean canEdit() {
         return this.signedIn() && this.getCurrentUser()
                                       .isAdmin();
@@ -228,6 +235,8 @@ public class LibraryApplicationGUI {
     // TODO: Merge loan and reserve into loanOrReserve.
     public void loan(RentalObject object) {
         // TODO: Format better?
+
+        // Try and loan object and show confirmation (receipt). Else show error.
         try {
             Rental r = this.userRentalService.loan(this.getCurrentUser(), object);
             this.quickMessageDialog(String.format("%s (id: %s) rented from\n%s \nuntil \n%s.",
@@ -244,6 +253,7 @@ public class LibraryApplicationGUI {
     }
 
     public void reserve(RentalObject object) {
+        // Try and reserve object and show confirmation (receipt). Else show error.
         try {
             Rental r = this.userRentalService.reserve(this.getCurrentUser(), object, object.getNextRentDate());
             this.quickMessageDialog(String.format("%s (id: %s) reserved from\n%s \nuntil \n%s.",
@@ -271,6 +281,7 @@ public class LibraryApplicationGUI {
         return true;
     }
 
+    // Method overload.
     public boolean returnObject(String id) {
         return this.returnObject(this.userRentalService.getRentalObjectById(id));
     }
@@ -282,5 +293,9 @@ public class LibraryApplicationGUI {
 
     public void refreshUser() {
         this.userService.refreshUserRentals(this.getCurrentUser());
+    }
+
+    public List<RentalObject> getUnreturnedRentalObjects() {
+        return this.libraryService.getUnreturnedRentalObjects();
     }
 }

@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+// Combined primary key for Rental
 @Embeddable
 public class RentalKey implements Serializable {
     @SuppressWarnings("JpaDataSourceORMInspection")
@@ -23,10 +24,10 @@ public class RentalKey implements Serializable {
     }
 
     public String getUserId() {
-        return userId;
+        return this.userId;
     }
 
     public String getRentalObjectId() {
-        return rentalObjectId;
+        return this.rentalObjectId;
     }
 }

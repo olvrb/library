@@ -28,18 +28,11 @@ public class SignInDialog extends JDialog {
         this.setUpListeners();
     }
 
+    // Button and various component listeners
     private void setUpListeners() {
-        this.buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                SignInDialog.this.onOK();
-            }
-        });
+        this.buttonOK.addActionListener(e -> SignInDialog.this.onOK());
 
-        this.buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                SignInDialog.this.onCancel();
-            }
-        });
+        this.buttonCancel.addActionListener(e -> SignInDialog.this.onCancel());
 
         // call onCancel() when cross is clicked
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -50,24 +43,21 @@ public class SignInDialog extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        this.contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                SignInDialog.this.onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        this.contentPane.registerKeyboardAction(e -> SignInDialog.this.onCancel(),
+                                                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                                                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onOK() {
+        // Authenticate user with provided ssn and password
         if (this.gui.authenticateUser(this.ssnField.getText(), new String(this.passwordField.getPassword()))) {
             this.dispose();
         } else {
             this.passwordField.setText("");
         }
-        // add your code here
     }
 
     private void onCancel() {
-        // add your code here if necessary
         this.dispose();
     }
 }

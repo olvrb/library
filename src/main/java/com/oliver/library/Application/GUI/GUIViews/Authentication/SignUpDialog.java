@@ -3,7 +3,7 @@ package com.oliver.library.Application.GUI.GUIViews.Authentication;
 import com.oliver.library.Application.Entities.User.GeneralUser;
 import com.oliver.library.Application.Entities.User.User;
 import com.oliver.library.Application.GUI.GUIViews.Templates.BaseJDialog;
-import com.oliver.library.Application.Services.ListenerServices;
+import com.oliver.library.Application.Services.ListenerService;
 import com.oliver.library.Application.GUI.LibraryApplicationGUI;
 
 import javax.swing.*;
@@ -42,7 +42,6 @@ public class SignUpDialog extends BaseJDialog {
             .setDefaultButton(this.buttonOK);
 
         this.setUpListeners();
-
     }
 
     public static void main(String[] args) {
@@ -53,6 +52,7 @@ public class SignUpDialog extends BaseJDialog {
     }
 
     private boolean validatePasswordField() {
+        // Validate password, then mark corresponding field as valid.
         boolean valid = User.validatePassword(new String(this.passwordField.getPassword()));
         this.markFieldValid(this.passwordField, valid);
         return valid;
@@ -64,25 +64,26 @@ public class SignUpDialog extends BaseJDialog {
         boolean valid = this.validatePasswordField() && Arrays.equals(this.passwordField.getPassword(),
                                                                       this.passwordVerificationField.getPassword());
         this.markFieldValid(this.passwordVerificationField, valid);
-
         return valid;
     }
 
     private boolean validateSsn() {
+        // Validate ssn, then mark corresponding field as valid.
         boolean valid = User.validateSsn(this.ssnField.getText());
         this.markFieldValid(this.ssnField, valid);
         return valid;
     }
 
 
+    // Button and various component listeners
     private void setUpListeners() {
-        ListenerServices.addChangeListener(this.passwordField, e -> {
+        ListenerService.addChangeListener(this.passwordField, e -> {
             this.validatePasswordField();
         });
-        ListenerServices.addChangeListener(this.passwordVerificationField, e -> {
+        ListenerService.addChangeListener(this.passwordVerificationField, e -> {
             this.validatePasswordVerificationField();
         });
-        ListenerServices.addChangeListener(this.ssnField, e -> {
+        ListenerService.addChangeListener(this.ssnField, e -> {
             this.validateSsn();
         });
 
@@ -109,7 +110,7 @@ public class SignUpDialog extends BaseJDialog {
         // Create user if fields are valid.
         // Close window if create user is successful.
         // This signup method can only create general users.
-        // If a user wants student, employee, or researcher privileges, they will theoretically need to be change by employees.
+        // If a user wants student, employee, or researcher privileges, they will theoretically need to be changed by employees.
         if (this.validatePasswordVerificationField() && this.validateSsn()) {
             if (this.gui.createUser(new GeneralUser(this.nameField.getText(),
                                                     this.ssnField.getText(),

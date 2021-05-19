@@ -1,4 +1,4 @@
-package com.oliver.library.Application.Services;
+package com.oliver.library.Application.Services.DataServices;
 
 import com.oliver.library.Application.Entities.Abstract.Rental;
 import com.oliver.library.Application.Entities.User.User;

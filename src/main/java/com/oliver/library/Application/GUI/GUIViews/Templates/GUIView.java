@@ -23,11 +23,12 @@ public class GUIView extends JDialog {
         return finalList;
     }
 
+    // Set field border to green or red based on its validity
     protected void markFieldValid(JTextComponent component, boolean valid) {
         this.setFieldBorder(component, valid ? Color.green : Color.RED);
     }
 
-    protected void setFieldBorder(JComponent component, Color c) {
+    private void setFieldBorder(JComponent component, Color c) {
         component.setBorder(BorderFactory.createLineBorder(c));
     }
 
@@ -43,6 +44,7 @@ public class GUIView extends JDialog {
         this.setSpecialInputVisible(this.specialInput, false);
     }
 
+    // Set multiple components as visible or not
     protected void setJComponentsVisible(List<JComponent> components, boolean visible) {
         for (JComponent c : components) {
             c.setVisible(visible);

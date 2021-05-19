@@ -25,9 +25,10 @@ public class CurrentLoansDialog extends BaseJDialog {
         this.setModal(true);
 
         this.setUpListeners();
-        this.setUpResultsList();
+        this.setUpCurrentLoansList();
     }
 
+    // Button and various component listeners
     private void setUpListeners() {
         this.returnButton.addActionListener(e -> CurrentLoansDialog.this.onOK());
     }
@@ -42,7 +43,8 @@ public class CurrentLoansDialog extends BaseJDialog {
         this.updateCurrentLoans();
     }
 
-    private void setUpResultsList() {
+    // Set up list model and update its values
+    private void setUpCurrentLoansList() {
         this.currentLoansListModel = new DefaultListModel<>();
         this.setCurrentLoansToModel();
         this.updateCurrentLoans();

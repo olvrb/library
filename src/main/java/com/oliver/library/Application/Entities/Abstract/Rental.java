@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+
+// "Kopplingsentitet" between RentalObject and User
 @Entity
 public class Rental {
     private Date startDate = new Date();

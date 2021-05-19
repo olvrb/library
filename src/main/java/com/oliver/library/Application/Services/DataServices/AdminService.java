@@ -1,4 +1,4 @@
-package com.oliver.library.Application.Services;
+package com.oliver.library.Application.Services.DataServices;
 
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.Exceptions.RentalObjectRentedException;
@@ -12,11 +12,11 @@ public class AdminService {
     private RentalObjectRepository rentalObjectRepository;
 
     public void removeRentalObject(RentalObject object) throws RentalObjectRentedException {
+        // Try and delete object
         try {
-
             this.rentalObjectRepository.delete(object);
         } catch (Exception e) {
-            throw new RentalObjectRentedException("Book currently rented: cannot delete.");
+            throw new RentalObjectRentedException("Object currently rented: cannot delete.");
         }
     }
 

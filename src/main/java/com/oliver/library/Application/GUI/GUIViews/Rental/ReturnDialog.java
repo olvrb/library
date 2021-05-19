@@ -43,6 +43,7 @@ public class ReturnDialog extends BaseJDialog {
         return this.gui;
     }
 
+    // Button and various component listeners
     private void setUpListeners() {
         this.buttonOK.addActionListener(e -> ReturnDialog.this.onOK());
 

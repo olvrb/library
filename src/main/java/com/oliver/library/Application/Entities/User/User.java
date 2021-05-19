@@ -5,7 +5,6 @@ import com.oliver.library.Application.Entities.Abstract.Rental;
 import com.oliver.library.Application.Entities.BaseEntity;
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.sun.istack.NotNull;
-import org.hibernate.annotations.Cascade;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
@@ -78,15 +77,17 @@ public abstract class User extends BaseEntity {
         this.rentals = rentals;
     }
 
-    public Set<Rental> getUnReturnedRentals() {
+    // Get all rentals this user has not returned.
+    public Set<Rental> getUnreturnedRentals() {
         return this.getRentals()
                    .stream()
                    .filter(x -> !x.returned())
                    .collect(Collectors.toSet());
     }
 
+    // Get all currently rented rentalObjects
     public Set<RentalObject> getCurrentRentalObjects() {
-        return this.getUnReturnedRentals()
+        return this.getUnreturnedRentals()
                    .stream()
                    .map(x -> x.getRentalObject())
                    .collect(Collectors.toSet());
@@ -110,8 +111,9 @@ public abstract class User extends BaseEntity {
         this.name = name;
     }
 
+    // Amount of currently rented objects
     public int currentlyRented() {
-        return this.getUnReturnedRentals()
+        return this.getUnreturnedRentals()
                    .size();
     }
 

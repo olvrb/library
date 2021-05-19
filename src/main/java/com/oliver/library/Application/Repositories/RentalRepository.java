@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Set;
 
+// Define rental transactions
 public interface RentalRepository extends CrudRepository<Rental, RentalKey> {
     Rental findByIdRentalObjectIdAndIdUserId(String rentalObjectId, String userId);
 

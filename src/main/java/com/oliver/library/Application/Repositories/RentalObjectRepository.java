@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
+// Define rentalObject transactions
 public interface RentalObjectRepository extends CrudRepository<RentalObject, String> {
     List<RentalObject> findByTitleContainingIgnoreCase(String title);
 

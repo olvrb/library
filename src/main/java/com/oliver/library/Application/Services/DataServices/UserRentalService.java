@@ -1,4 +1,4 @@
-package com.oliver.library.Application.Services;
+package com.oliver.library.Application.Services.DataServices;
 
 import com.oliver.library.Application.Entities.Abstract.Rental;
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
@@ -39,7 +39,7 @@ public class UserRentalService {
     }
 
     public Rental getCurrentRental(RentalObject object) {
-        return object.getCurrentRental();
+        return object.getMostRecentRental();
     }
 
     public RentalObject getRentalObjectById(String id) {
@@ -50,7 +50,7 @@ public class UserRentalService {
     public RentalObject markRentalStatusForRentalObject(RentalObject obj, boolean status) throws NotFoundException {
         if (obj == null) throw new NotFoundException("Object not found");
         else {
-            Rental r = obj.getCurrentRental();
+            Rental r = obj.getMostRecentRental();
             if (r == null) throw new NotFoundException("No rentals to return");
             r.setReturned(status);
             this.rentalRepository.save(r);

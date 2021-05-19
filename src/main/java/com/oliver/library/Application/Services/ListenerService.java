@@ -11,7 +11,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
 
-public class ListenerServices {
+public class ListenerService {
     // addChangeListener taken from: https://stackoverflow.com/questions/3953208/value-change-listener-to-jtextfield
     // Author: Boann
     // Not written by myself.
