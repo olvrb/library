@@ -48,6 +48,7 @@ public class UserRentalService {
     }
 
     public RentalObject markRentalStatusForRentalObject(RentalObject obj, boolean status) throws NotFoundException {
+        // Attempt to mark most recent Rental as returned.
         if (obj == null) throw new NotFoundException("Object not found");
         else {
             Rental r = obj.getMostRecentRental();

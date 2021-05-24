@@ -26,10 +26,6 @@ public class Book extends RentalObject {
 
     }
 
-    public static boolean validateBook(Book book) {
-        return true;
-    }
-
     public Year getPublicationYear() {
         return this.publicationYear;
     }

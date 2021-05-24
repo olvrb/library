@@ -79,6 +79,10 @@ public class MainView extends GUIView {
         this.setUpListeners();
     }
 
+    public void init() {
+        this.updateSearchResults();
+    }
+
     // Only show signedUpComponents, and none of the other special inputs.
     @Override
     protected void setUpSpecialInput() {

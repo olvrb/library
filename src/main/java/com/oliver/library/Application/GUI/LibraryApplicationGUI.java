@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 
+import javax.annotation.PostConstruct;
 import javax.naming.AuthenticationException;
 import javax.swing.*;
 import java.awt.*;
@@ -76,6 +77,11 @@ public class LibraryApplicationGUI {
         this.setCentered();
         // this.mainFrame.pack();
         this.mainFrame.setVisible(true);
+    }
+
+    @PostConstruct
+    private void init() {
+        this.mainView.init();
     }
 
     private void setCentered() {
@@ -291,6 +297,7 @@ public class LibraryApplicationGUI {
         this.showDialog(new EditRentalObjectDialog(this, obj));
     }
 
+    // To be called after changing user rentals in some way, as it is not updated automatically in the currentUser object.
     public void refreshUser() {
         this.userService.refreshUserRentals(this.getCurrentUser());
     }
