@@ -2,12 +2,12 @@ package com.oliver.library.Application.GUI.GUIViews.Rental;
 
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
 import com.oliver.library.Application.Entities.User.User;
-import com.oliver.library.Application.GUI.GUIViews.Templates.BaseJDialog;
+import com.oliver.library.Application.GUI.GUIViews.Templates.GUIView;
 import com.oliver.library.Application.GUI.LibraryApplicationGUI;
 
 import javax.swing.*;
 
-public class UnreturnedLoansDialog extends BaseJDialog {
+public class UnreturnedLoansDialog extends GUIView {
     private JPanel contentPane;
 
     private JList<RentalObject> unreturnedLoansList;

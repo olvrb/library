@@ -4,7 +4,7 @@ import com.oliver.library.Application.Entities.Inventory.Book;
 import com.oliver.library.Application.Entities.Inventory.Film;
 import com.oliver.library.Application.Entities.Inventory.Journal;
 import com.oliver.library.Application.Entities.Inventory.RentalObject;
-import com.oliver.library.Application.GUI.GUIViews.Templates.BaseJDialog;
+import com.oliver.library.Application.GUI.GUIViews.Templates.GUIView;
 import com.oliver.library.Application.Services.ListenerService;
 import com.oliver.library.Application.GUI.LibraryApplicationGUI;
 
@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class EditRentalObjectDialog extends BaseJDialog {
+public class EditRentalObjectDialog extends GUIView {
     private JPanel contentPane;
 
     private JButton buttonOK;

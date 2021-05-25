@@ -2,7 +2,7 @@ package com.oliver.library.Application.GUI.GUIViews.Authentication;
 
 import com.oliver.library.Application.Entities.User.GeneralUser;
 import com.oliver.library.Application.Entities.User.User;
-import com.oliver.library.Application.GUI.GUIViews.Templates.BaseJDialog;
+import com.oliver.library.Application.GUI.GUIViews.Templates.GUIView;
 import com.oliver.library.Application.Services.ListenerService;
 import com.oliver.library.Application.GUI.LibraryApplicationGUI;
 
@@ -12,7 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
 
-public class SignUpDialog extends BaseJDialog {
+public class SignUpDialog extends GUIView {
     private JPanel contentPane;
 
     private JButton buttonOK;

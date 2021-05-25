@@ -32,6 +32,7 @@ public class GUIView extends JDialog {
         component.setBorder(BorderFactory.createLineBorder(c));
     }
 
+    // Initial setup
     protected void setUpSpecialInput() {
         this.hideSpecialInput();
     }

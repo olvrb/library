@@ -41,6 +41,6 @@ public class DataLoaderComponent implements ApplicationRunner {
         // this.rentalRepository.save(r1);
 
         Set<User> jack = this.userRepository.findByName("jack");
-        System.out.println(jack.size());
+        // System.out.println(jack.size());
     }
 }

@@ -7,18 +7,18 @@ import java.util.UUID;
 @MappedSuperclass
 public class BaseEntity {
     @Id
-    protected String Id;
+    protected String id;
 
     public BaseEntity() {
-        this.Id = UUID.randomUUID()
+        this.id = UUID.randomUUID()
                       .toString();
     }
 
     public String getId() {
-        return this.Id;
+        return this.id;
     }
 
     public void setId(String id) {
-        this.Id = id;
+        this.id = id;
     }
 }

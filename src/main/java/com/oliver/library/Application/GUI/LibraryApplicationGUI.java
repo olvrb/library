@@ -234,7 +234,7 @@ public class LibraryApplicationGUI {
     }
 
     public boolean signedIn() {
-        return this.currentUser != null;
+        return this.getCurrentUser() != null;
     }
 
 

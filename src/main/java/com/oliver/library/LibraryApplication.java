@@ -8,12 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootApplication
-@ComponentScan("com.oliver.library")
 public class LibraryApplication {
-    public LibraryApplication() {
-        new LibraryApplicationGUI();
-    }
-
     public static void main(String[] args) {
         SpringApplicationBuilder builder = new SpringApplicationBuilder(LibraryApplication.class);
 
@@ -22,5 +17,4 @@ public class LibraryApplication {
 
         ConfigurableApplicationContext context = builder.run(args);
     }
-
 }

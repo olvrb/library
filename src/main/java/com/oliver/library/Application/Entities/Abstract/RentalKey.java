@@ -37,11 +37,13 @@ public class RentalKey implements Serializable {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
         RentalKey rentalKey = (RentalKey)o;
-        return this.userId.equals(rentalKey.userId) && this.rentalObjectId.equals(rentalKey.rentalObjectId);
+        return this.getUserId()
+                   .equals(rentalKey.userId) && this.getRentalObjectId()
+                                                    .equals(rentalKey.rentalObjectId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.userId, this.rentalObjectId);
+        return Objects.hash(this.getUserId(), this.getRentalObjectId());
     }
 }

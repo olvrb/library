@@ -70,10 +70,12 @@ public class Rental {
 
     // Calculate return date based on start data and rental period.
     public Date getReturnDate() {
-        LocalDateTime date = this.startDate.toInstant()
-                                           .atZone(ZoneId.systemDefault())
-                                           .toLocalDateTime();
-        int days = this.rentalObject.getRentalPeriod();
+        LocalDateTime date = this.getStartDate()
+                                 .toInstant()
+                                 .atZone(ZoneId.systemDefault())
+                                 .toLocalDateTime();
+        int days = this.getRentalObject()
+                       .getRentalPeriod();
         date = date.plusDays(days);
         return Date.from(date.atZone(ZoneId.systemDefault())
                              .toInstant());
