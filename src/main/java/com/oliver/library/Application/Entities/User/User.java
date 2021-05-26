@@ -34,7 +34,7 @@ public abstract class User extends BaseEntity {
     @NotNull
     private String password;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Rental> rentals = new HashSet<>();
 
     public User(String name, String ssn, String password) {

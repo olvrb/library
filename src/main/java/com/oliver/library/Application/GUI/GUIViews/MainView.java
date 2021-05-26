@@ -117,6 +117,7 @@ public class MainView extends GUIView {
         this.currentLoansButton.addActionListener(e -> {
             this.getGui()
                 .showCurrentLoansDialog();
+            this.updateSearchResults();
         });
 
         this.editObjectButton.addActionListener(e -> {
@@ -215,9 +216,17 @@ public class MainView extends GUIView {
 
 
     private void removeObject() {
-        // Remove selected object.
-        this.getGui()
-            .removeRentalObject(this.resultsList.getSelectedValue());
+        RentalObject obj = this.resultsList.getSelectedValue();
+
+        if (obj != null) {
+            // Remove selected object.
+            this.getGui()
+                .removeRentalObject(this.resultsList.getSelectedValue());
+            this.updateSearchResults();
+        } else {
+            this.getGui()
+                .showError("Select object to remove.");
+        }
     }
 
     // Set up list model

@@ -12,7 +12,7 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class RentalObject extends BaseEntity {
     @SuppressWarnings("unused")
-    @OneToMany(mappedBy = "rentalObject", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "rentalObject", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Rental> rentals;
 
     private String title;

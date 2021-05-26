@@ -6,11 +6,14 @@ import com.oliver.library.Application.Repositories.RentalObjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class AdminService {
     @Autowired
     private RentalObjectRepository rentalObjectRepository;
 
+    @Transactional
     public void removeRentalObject(RentalObject object) throws RentalObjectRentedException {
         // Try and delete object
         try {
